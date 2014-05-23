@@ -15,8 +15,6 @@ class Sale:
     shop = fields.Many2One('sale.shop', 'Shop', required=True, domain=[
             ('id', 'in', Eval('context', {}).get('shops', [])),
             ],
-        on_change=['shop', 'company', 'invoice_method', 'shipment_method',
-            'warehouse', 'price_list', 'payment_term'],
         states={
             'readonly': Or(Bool(Eval('reference')), Bool(Eval('lines'))),
             }, depends=['reference', 'lines'])
@@ -110,6 +108,8 @@ class Sale:
         return (user.shop and user.shop.address and
             user.shop.address.id or None)
 
+    @fields.depends('shop', 'company', 'invoice_method', 'shipment_method',
+        'warehouse', 'price_list', 'payment_term')
     def on_change_shop(self):
         if not self.shop:
             return {}
