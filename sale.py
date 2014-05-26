@@ -193,11 +193,11 @@ class Sale:
         User = Pool().get('res.user')
         user = User(Transaction().user)
         if user.id != 0:
-            shops = [s.id for s in user.shops]
-            for sales in iter(args):
+            actions = iter(args)
+            for sales, _ in zip(actions, actions):
                 for sale in sales:
                     if not sale.shop:
                         cls.raise_user_error('sale_not_shop')
-                    if not sale.shop.id in shops:
+                    if not sale.shop in user.shops:
                         cls.raise_user_error('edit_sale_by_shop')
         super(Sale, cls).write(*args)
