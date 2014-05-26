@@ -50,7 +50,7 @@ class SaleShop(ModelSQL, ModelView):
                 Eval('context', {}).get('company', 0)),
             ], select=True)
     company_party = fields.Function(fields.Many2One('party.party',
-            'Company Party', on_change_with=['company']),
+            'Company Party'),
         'on_change_with_company_party')
 
     @staticmethod
@@ -63,6 +63,7 @@ class SaleShop(ModelSQL, ModelView):
         config = Config(1)
         return config
 
+    @fields.depends('company')
     def on_change_with_company_party(self, name=None):
         Company = Pool().get('company.company')
         company = self.company

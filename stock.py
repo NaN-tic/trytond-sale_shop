@@ -13,7 +13,7 @@ class ShipmentOut:
     __name__ = 'stock.shipment.out'
 
     shop_addresses = fields.Function(fields.Many2Many('party.address', None,
-            None, 'Shop Addresses', on_change_with=['warehouse']),
+            None, 'Shop Addresses'),
         'on_change_with_shop_addresses')
 
     @classmethod
@@ -33,6 +33,7 @@ class ShipmentOut:
         if 'shop_addresses' not in cls.delivery_address.depends:
             cls.delivery_address.depends.append('shop_addresses')
 
+    @fields.depends('warehouse')
     def on_change_with_shop_addresses(self, name=None):
         Shop = Pool().get('sale.shop')
         if not self.warehouse:
@@ -47,7 +48,7 @@ class ShipmentOutReturn:
     __name__ = 'stock.shipment.out.return'
 
     shop_addresses = fields.Function(fields.Many2Many('party.address', None,
-            None, 'Shop Addresses', on_change_with=['warehouse']),
+            None, 'Shop Addresses'),
         'on_change_with_shop_addresses')
 
     @classmethod
@@ -67,6 +68,7 @@ class ShipmentOutReturn:
         if 'shop_addresses' not in cls.delivery_address.depends:
             cls.delivery_address.depends.append('shop_addresses')
 
+    @fields.depends('warehouse')
     def on_change_with_shop_addresses(self, name=None):
         Shop = Pool().get('sale.shop')
         if not self.warehouse:

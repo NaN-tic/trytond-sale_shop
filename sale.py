@@ -19,7 +19,7 @@ class Sale:
             'readonly': Or(Bool(Eval('reference')), Bool(Eval('lines'))),
             }, depends=['reference', 'lines'])
     shop_address = fields.Function(fields.Many2One('party.address',
-            'Shop Address', on_change_with=['shop']),
+            'Shop Address'),
         'on_change_with_shop_address')
 
     @classmethod
@@ -124,6 +124,7 @@ class Sale:
             res['shipment_method'] = self.shop.sale_shipment_method
         return res
 
+    @fields.depends('shop')
     def on_change_with_shop_address(self, name=None):
         return (self.shop and self.shop.address and
             self.shop.address.id or None)
