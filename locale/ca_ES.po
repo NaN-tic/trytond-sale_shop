@@ -30,9 +30,17 @@ msgctxt "field:sale.sale,shop:"
 msgid "Shop"
 msgstr "Botiga"
 
+msgctxt "field:sale.sale,shop_address:"
+msgid "Shop Address"
+msgstr "Adreça botiga"
+
+msgctxt "field:sale.shop,active:"
+msgid "Active"
+msgstr "Actiu"
+
 msgctxt "field:sale.shop,address:"
-msgid ""
-msgstr ""
+msgid "Address"
+msgstr "Adreça"
 
 msgctxt "field:sale.shop,company:"
 msgid "Company"
