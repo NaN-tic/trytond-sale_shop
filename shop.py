@@ -52,10 +52,15 @@ class SaleShop(ModelSQL, ModelView):
     company_party = fields.Function(fields.Many2One('party.party',
             'Company Party'),
         'on_change_with_company_party')
+    active = fields.Boolean('Active', select=True)
 
     @staticmethod
     def default_company():
         return Transaction().context.get('company')
+
+    @staticmethod
+    def default_active():
+        return True
 
     @staticmethod
     def sale_configuration():

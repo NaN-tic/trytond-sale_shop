@@ -4,6 +4,8 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
 <form string="Shops" col="4">
     <label name="name"/>
     <field name="name"/>
+    <label name="active"/>
+    <field name="active"/>
     <label name="company"/>
     <field name="company"/>
     <label name="address"/>
