@@ -20,6 +20,7 @@ class SaleShop(ModelSQL, ModelView):
             ], depends=['company_party'])
     warehouse = fields.Many2One('stock.location', "Warehouse", required=True,
         domain=[('type', '=', 'warehouse')])
+    currency = fields.Many2One('currency.currency', 'Currency', required=True)
     price_list = fields.Many2One('product.price_list', 'Pricelist',
         required=True)
     payment_term = fields.Many2One('account.invoice.payment_term',
@@ -53,6 +54,32 @@ class SaleShop(ModelSQL, ModelView):
             'Company Party'),
         'on_change_with_company_party')
     active = fields.Boolean('Active', select=True)
+
+    @classmethod
+    def __register__(cls, module_name):
+        pool = Pool()
+        Company = pool.get('company.company')
+        shop_table = cls.__table__()
+        company_table = Company.__table__()
+
+        super(SaleShop, cls).__register__(module_name)
+        cursor = Transaction().cursor
+        query = shop_table.update(columns=[shop_table.currency],
+            values=[company_table.currency],
+            from_=[company_table],
+            where=((shop_table.company == company_table.id)
+                & (shop_table.currency == None)))
+        cursor.execute(*query)
+
+    @staticmethod
+    def default_currency():
+        pool = Pool()
+        Company = pool.get('company.company')
+        Shop = pool.get('sale.shop')
+
+        company_id = Shop.default_company()
+        company = Company(company_id)
+        return company.currency.id
 
     @staticmethod
     def default_company():

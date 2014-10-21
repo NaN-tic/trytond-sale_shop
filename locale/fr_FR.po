@@ -3,6 +3,10 @@ msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "error:sale.sale:"
+msgid "Go to user preferences and select a shop (\"%s\")"
+msgstr ""
+
+msgctxt "error:sale.sale:"
 msgid "Sale have not related a shop"
 msgstr "Vente non liées a un magasin"
 
@@ -26,6 +30,15 @@ msgctxt "field:sale.sale,shop:"
 msgid "Shop"
 msgstr "Magasin"
 
+msgctxt "field:sale.sale,shop_address:"
+msgid "Shop Address"
+msgstr ""
+
+#, fuzzy
+msgctxt "field:sale.shop,active:"
+msgid "Active"
+msgstr "Actif"
+
 #, fuzzy
 msgctxt "field:sale.shop,address:"
 msgid "Address"
@@ -35,9 +48,10 @@ msgctxt "field:sale.shop,company:"
 msgid "Company"
 msgstr "Société"
 
+#, fuzzy
 msgctxt "field:sale.shop,company_party:"
 msgid "Company Party"
-msgstr ""
+msgstr "Tiers de la société"
 
 msgctxt "field:sale.shop,create_date:"
 msgid "Create Date"
@@ -46,6 +60,11 @@ msgstr "Date de création"
 msgctxt "field:sale.shop,create_uid:"
 msgid "Create User"
 msgstr "Créé par "
+
+#, fuzzy
+msgctxt "field:sale.shop,currency:"
+msgid "Currency"
+msgstr "Devises"
 
 msgctxt "field:sale.shop,id:"
 msgid "ID"

@@ -37,6 +37,9 @@ class Sale:
             cls.shipment_address.domain = [('id', '=', Eval('shop_address'))]
         cls.shipment_address.depends.append('shop_address')
 
+        cls.currency.states['readonly'] |= Eval('shop')
+        cls.currency.depends.append('shop')
+
         cls._error_messages.update({
                 'not_sale_shop': (
                     'Go to user preferences and select a shop ("%s")'),
@@ -114,7 +117,8 @@ class Sale:
         if not self.shop:
             return {}
         res = {}
-        for fname in ('company', 'warehouse', 'price_list', 'payment_term'):
+        for fname in ('company', 'warehouse', 'currency', 'price_list',
+                'payment_term'):
             fvalue = getattr(self.shop, fname)
             if fvalue:
                 res[fname] = fvalue.id
