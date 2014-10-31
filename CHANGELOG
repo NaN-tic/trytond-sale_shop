@@ -1,4 +1,4 @@
-Version 3.2.1 - 2014-10-14
+Version 3.2.1 - 2014-10-31
 * Use the sale's shop instead of user's shop to calculate the Price list for
   sale
 * Remove unnecessary fields from depends and add some necessary
