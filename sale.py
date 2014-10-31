@@ -111,17 +111,18 @@ class Sale:
         return (user.shop and user.shop.address and
             user.shop.address.id or None)
 
-    @fields.depends('shop', 'company', 'invoice_method', 'shipment_method',
-        'warehouse', 'price_list', 'payment_term')
+    @fields.depends('shop', 'party')
     def on_change_shop(self):
         if not self.shop:
             return {}
         res = {}
-        for fname in ('company', 'warehouse', 'currency', 'price_list',
-                'payment_term'):
+        for fname in ('company', 'warehouse', 'currency', 'payment_term'):
             fvalue = getattr(self.shop, fname)
             if fvalue:
                 res[fname] = fvalue.id
+        if ((not self.party or not self.party.sale_price_list)
+                and self.shop.price_list):
+            res['price_list'] = self.shop.price_list.id
         if self.shop.sale_invoice_method:
             res['invoice_method'] = self.shop.sale_invoice_method
         if self.shop.sale_shipment_method:
@@ -133,20 +134,17 @@ class Sale:
         return (self.shop and self.shop.address and
             self.shop.address.id or None)
 
+    @fields.depends('shop')
     def on_change_party(self):
-        User = Pool().get('res.user')
-        Shop = Pool().get('sale.shop')
         res = super(Sale, self).on_change_party()
-        user = User(Transaction().user)
-        if user.shop:
+
+        if self.shop:
             if not res.get('price_list') and res.get('invoice_address'):
-                res['price_list'] = Shop(user.shop).price_list.id
-                res['price_list.rec_name'] = (
-                    Shop(user.shop).price_list.rec_name)
+                res['price_list'] = self.shop.price_list.id
+                res['price_list.rec_name'] = self.shop.price_list.rec_name
             if not res.get('payment_term') and res.get('invoice_address'):
-                res['payment_term'] = Shop(user.shop).payment_term.id
-                res['payment_term.rec_name'] = \
-                    Shop(user.shop).payment_term.rec_name
+                res['payment_term'] = self.shop.payment_term.id
+                res['payment_term.rec_name'] = self.shop.payment_term.rec_name
         return res
 
     @classmethod
