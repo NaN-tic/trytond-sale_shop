@@ -5,6 +5,7 @@ from trytond.model import ModelView, ModelSQL, fields
 from trytond.pyson import If, Eval, Bool
 from trytond.transaction import Transaction
 from trytond.pool import Pool
+from trytond import backend
 
 __all__ = ['SaleShop', 'SaleShopResUser']
 
@@ -58,18 +59,23 @@ class SaleShop(ModelSQL, ModelView):
     @classmethod
     def __register__(cls, module_name):
         pool = Pool()
+        TableHandler = backend.get('TableHandler')
         Company = pool.get('company.company')
         shop_table = cls.__table__()
         company_table = Company.__table__()
 
         super(SaleShop, cls).__register__(module_name)
         cursor = Transaction().cursor
-        query = shop_table.update(columns=[shop_table.currency],
-            values=[company_table.currency],
-            from_=[company_table],
-            where=((shop_table.company == company_table.id)
-                & (shop_table.currency == None)))
-        cursor.execute(*query)
+        is_sqlite = 'backend.sqlite.table.TableHandler' in str(TableHandler)
+        if not is_sqlite:
+            # SQLite doesn't support this query as it generates and update
+            # with an alias (AS) which is not valid on SQLite
+            query = shop_table.update(columns=[shop_table.currency],
+                values=[company_table.currency],
+                from_=[company_table],
+                where=((shop_table.company == company_table.id)
+                    & (shop_table.currency == None)))
+            cursor.execute(*query)
 
     @staticmethod
     def default_currency():
