@@ -2,26 +2,17 @@
 #This file is part sale_shop module for Tryton.
 #The COPYRIGHT file at the top level of this repository contains
 #the full copyright notices and license terms.
-
-import sys
-import os
-DIR = os.path.abspath(os.path.normpath(os.path.join(__file__,
-    '..', '..', '..', '..', '..', 'trytond')))
-if os.path.isdir(DIR):
-    sys.path.insert(0, os.path.dirname(DIR))
-
 import unittest
 import doctest
 import trytond.tests.test_tryton
-from trytond.tests.test_tryton import test_view, test_depends, doctest_dropdb
+from trytond.tests.test_tryton import test_view, test_depends
+from trytond.tests.test_tryton import doctest_setup, doctest_teardown
 from trytond.tests.test_tryton import POOL, DB_NAME, USER, CONTEXT
 from trytond.transaction import Transaction
 
 
 class SaleShopTestCase(unittest.TestCase):
-    '''
-    Test SaleShop module.
-    '''
+    'Test SaleShop module'
 
     def setUp(self):
         trytond.tests.test_tryton.install_module('sale_shop')
@@ -34,15 +25,11 @@ class SaleShopTestCase(unittest.TestCase):
         self.sequence = POOL.get('ir.sequence')
 
     def test0005views(self):
-        '''
-        Test views.
-        '''
+        'Test views'
         test_view('sale_shop')
 
     def test0006depends(self):
-        '''
-        Test depends.
-        '''
+        'Test depends'
         test_depends()
 
     def test0010_create_shop(self):
@@ -53,6 +40,11 @@ class SaleShopTestCase(unittest.TestCase):
             company, = self.company.search([
                     ('rec_name', '=', 'Dunder Mifflin'),
                     ])
+            self.user.write([self.user(USER)], {
+                    'main_company': company.id,
+                    'company': company.id,
+                    })
+            CONTEXT.update(self.user.get_preferences(context_only=True))
             with transaction.set_context(company=company.id):
                 sequence, = self.sequence.search([
                         ('code', '=', 'sale.sale'),
@@ -88,15 +80,24 @@ class SaleShopTestCase(unittest.TestCase):
                         'shops': [('add', [shop])],
                         'shop': shop.id,
                          })
+            # Clear user values before commiting
+            self.user.write([self.user(USER)], {
+                    'main_company': None,
+                    'company': None,
+                    })
             transaction.cursor.commit()
 
 
 def suite():
     suite = trytond.tests.test_tryton.suite()
+    from trytond.modules.company.tests import test_company
+    for test in test_company.suite():
+        if test not in suite:
+            suite.addTest(test)
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
         SaleShopTestCase))
     suite.addTests(doctest.DocFileSuite(
             'scenario_sale_shop.rst',
-            setUp=doctest_dropdb, tearDown=doctest_dropdb, encoding='utf-8',
+            setUp=doctest_setup, tearDown=doctest_teardown, encoding='utf-8',
             optionflags=doctest.REPORT_ONLY_FIRST_FAILURE))
     return suite
