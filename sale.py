@@ -1,6 +1,7 @@
 # This file is part sale_shop module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
+from trytond import backend
 from trytond.model import fields
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
@@ -48,6 +49,35 @@ class Sale:
                 'edit_sale_by_shop': ('You cannot edit this order because you '
                     'do not have permission to edit in this shop.'),
             })
+
+
+    @classmethod
+    def __register__(cls, module_name):
+        TableHandler = backend.get('TableHandler')
+        cursor = Transaction().cursor
+        sql_table = cls.__table__()
+        table = TableHandler(cursor, cls, module_name)
+        if not table.column_exist('shop'):
+            table.add_raw_column(
+                    'shop',
+                    cls.shop.sql_type(),
+                    cls.shop.sql_format, None, None
+                    )
+        else:
+            Shop = Pool().get('sale.shop')
+            shops = Shop.search([])
+            if shops:
+                sales = cls.search([
+                    ('shop', '=', None),
+                ])
+                for sale in sales:
+                    cursor.execute(*sql_table.update(
+                            columns=[sql_table.shop],
+                            values=[shops[0].id],
+                            where=sql_table.id == sale.id))
+            else:
+                raise Exception('Error', 'You must to create at least one shop!')
+        super(Sale, cls).__register__(module_name)
 
     @staticmethod
     def default_company():
