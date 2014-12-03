@@ -6,6 +6,7 @@ from trytond.model import fields
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Bool, Eval, Or
+import logging
 
 __all__ = ['Sale']
 __metaclass__ = PoolMeta
@@ -76,7 +77,9 @@ class Sale:
                             values=[shops[0].id],
                             where=sql_table.id == sale.id))
             else:
-                raise Exception('Error', 'You must to create at least one shop!')
+                logging.getLogger('sale shop').warning(
+                    'You must to create a shop and update module '
+                    'to assign current sales to new shop.')
         super(Sale, cls).__register__(module_name)
 
     @staticmethod
