@@ -6,6 +6,6 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         expr="/form/notebook/page[@id=&quot;other&quot;]/field[@name=&quot;company&quot;]"
         position="after">
         <label name="shop"/>
-        <field name="shop" widget="selection"/>
+        <field name="shop"/>
     </xpath>
 </data>
