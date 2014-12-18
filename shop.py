@@ -84,8 +84,7 @@ class SaleShop(ModelSQL, ModelView):
         Shop = pool.get('sale.shop')
 
         company_id = Shop.default_company()
-        company = Company(company_id)
-        return company.currency.id
+        return company_id and Company(company_id).currency.id or None
 
     @staticmethod
     def default_company():
