@@ -56,7 +56,6 @@ class Sale:
     def __register__(cls, module_name):
         TableHandler = backend.get('TableHandler')
         cursor = Transaction().cursor
-        sql_table = cls.__table__()
         table = TableHandler(cursor, cls, module_name)
         if not table.column_exist('shop'):
             table.add_raw_column(
@@ -64,22 +63,11 @@ class Sale:
                     cls.shop.sql_type(),
                     cls.shop.sql_format, None, None
                     )
-        else:
-            Shop = Pool().get('sale.shop')
-            shops = Shop.search([])
-            if shops:
-                sales = cls.search([
-                    ('shop', '=', None),
-                ])
-                for sale in sales:
-                    cursor.execute(*sql_table.update(
-                            columns=[sql_table.shop],
-                            values=[shops[0].id],
-                            where=sql_table.id == sale.id))
-            else:
-                logging.getLogger('sale shop').warning(
-                    'You must to create a shop and update module '
-                    'to assign current sales to new shop.')
+            logging.getLogger('sale shop').warning(
+                'Create a Sale Shop and assign current sales with this shop '
+                    'with SQL:')
+            logging.getLogger('sale shop').warning(
+                'UPDATE sale_sale set shop = 1;')
         super(Sale, cls).__register__(module_name)
 
     @staticmethod
