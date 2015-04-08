@@ -100,7 +100,7 @@ class Sale:
         if not user.shop:
             Config = Pool().get('sale.configuration')
             config = Config(1)
-            return config.sale_invoice_method
+            return config.sale_shipment_method
         return user.shop.sale_shipment_method
 
     @staticmethod
