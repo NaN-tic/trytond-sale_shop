@@ -26,12 +26,9 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="model" search="[('model', '=', 'sale.sale')]"/>
             <field name="global_p" eval="True"/>
         </record>
-        <!--
-            <field name="domain">[('shop', 'in', [s.id for s in user.shops])]</field>
-            <field name="domain" eval="[('shop', 'in', Eval('context', {}).get('user.shops.id', []))]"
-        -->
         <record model="ir.rule" id="rule_sale1">
-            <field name="domain" eval="[('shop', 'in', [Eval('context', {}).get('user.shops.id', [])] )]"
+            <field name="domain"
+                eval="[('shop', '=', Eval('user', {}).get('shop', -1))]"
                 pyson="1"/>
             <field name="rule_group" ref="rule_group_sale"/>
         </record>
