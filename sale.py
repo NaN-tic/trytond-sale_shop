@@ -135,20 +135,18 @@ class Sale:
     @fields.depends('shop', 'party')
     def on_change_shop(self):
         if not self.shop:
-            return {}
-        res = {}
+            return
         for fname in ('company', 'warehouse', 'currency', 'payment_term'):
             fvalue = getattr(self.shop, fname)
             if fvalue:
-                res[fname] = fvalue.id
+                setattr(self, fname, fvalue.id)
         if ((not self.party or not self.party.sale_price_list)
                 and self.shop.price_list):
-            res['price_list'] = self.shop.price_list.id
+            self.price_list = self.shop.price_list.id
         if self.shop.sale_invoice_method:
-            res['invoice_method'] = self.shop.sale_invoice_method
+            self.invoice_method = self.shop.sale_invoice_method
         if self.shop.sale_shipment_method:
-            res['shipment_method'] = self.shop.sale_shipment_method
-        return res
+            self.shipment_method = self.shop.sale_shipment_method
 
     @fields.depends('shop')
     def on_change_with_shop_address(self, name=None):
@@ -157,16 +155,15 @@ class Sale:
 
     @fields.depends('shop')
     def on_change_party(self):
-        res = super(Sale, self).on_change_party()
+        super(Sale, self).on_change_party()
 
         if self.shop:
-            if not res.get('price_list') and res.get('invoice_address'):
-                res['price_list'] = self.shop.price_list.id
-                res['price_list.rec_name'] = self.shop.price_list.rec_name
-            if not res.get('payment_term') and res.get('invoice_address'):
-                res['payment_term'] = self.shop.payment_term.id
-                res['payment_term.rec_name'] = self.shop.payment_term.rec_name
-        return res
+            if not self.price_list and self.invoice_address:
+                self.price_list = self.shop.price_list.id
+                self.price_list.rec_name = self.shop.price_list.rec_name
+            if not self.payment_term and self.invoice_address:
+                self.payment_term = self.shop.payment_term.id
+                self.payment_term.rec_name = self.shop.payment_term.rec_name
 
     @classmethod
     def set_reference(cls, sales):

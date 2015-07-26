@@ -17,15 +17,22 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         </record>
 
         <record model="ir.action.act_window" id="sale.act_sale_form">
-            <field name="search_value">[('shop', 'ilike',  Eval('context', {}).get('shop.rec_name', '%'))]</field>
+            <field name="search_value"
+                eval="[('shop', 'ilike',  Eval('context', {}).get('shop.rec_name', '%'))]"
+                pyson="1"/>
         </record>
 
         <record model="ir.rule.group" id="rule_group_sale">
             <field name="model" search="[('model', '=', 'sale.sale')]"/>
             <field name="global_p" eval="True"/>
         </record>
-        <record model="ir.rule" id="rule_sale1">
+        <!--
             <field name="domain">[('shop', 'in', [s.id for s in user.shops])]</field>
+            <field name="domain" eval="[('shop', 'in', Eval('context', {}).get('user.shops.id', []))]"
+        -->
+        <record model="ir.rule" id="rule_sale1">
+            <field name="domain" eval="[('shop', 'in', [Eval('context', {}).get('user.shops.id', [])] )]"
+                pyson="1"/>
             <field name="rule_group" ref="rule_group_sale"/>
         </record>
     </data>
