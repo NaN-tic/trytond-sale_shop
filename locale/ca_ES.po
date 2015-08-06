@@ -1,4 +1,4 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
@@ -9,6 +9,14 @@ msgstr "Selecciona una botiga en les seves preferencies (\"%s\")"
 msgctxt "error:sale.sale:"
 msgid "Sale have not related a shop"
 msgstr "La comanda no està relacionada amb una botiga"
+
+msgctxt "error:sale.sale:"
+msgid ""
+"There is another sale with the same reference.\n"
+"The reference of the sale must be unique!"
+msgstr ""
+"Hi ha una altra venda amb la mateixa referencia.\n"
+"La referencia ha de ser única per botiga."
 
 msgctxt "error:sale.sale:"
 msgid ""
