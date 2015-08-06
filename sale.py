@@ -27,6 +27,11 @@ class Sale:
     @classmethod
     def __setup__(cls):
         super(Sale, cls).__setup__()
+        cls._sql_constraints.extend([
+            ('reference_uniq', 'UNIQUE(shop, reference)',
+             'There is another sale with the same reference.\n'
+             'The reference of the sale must be unique!')
+            ])
 
         shipment_addr_domain = cls.shipment_address.domain[:]
         if shipment_addr_domain:
