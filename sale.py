@@ -11,6 +11,8 @@ import logging
 __all__ = ['Sale']
 __metaclass__ = PoolMeta
 
+logger = logging.getLogger(__name__)
+
 
 class Sale:
     __name__ = 'sale.sale'
@@ -68,10 +70,10 @@ class Sale:
                     cls.shop.sql_type(),
                     cls.shop.sql_format, None, None
                     )
-            logging.getLogger('sale shop').warning(
+            logger.warning(
                 'Create a Sale Shop and assign current sales with this shop '
                     'with SQL:')
-            logging.getLogger('sale shop').warning(
+            logger.warning(
                 'UPDATE sale_sale set shop = 1;')
         super(Sale, cls).__register__(module_name)
 
