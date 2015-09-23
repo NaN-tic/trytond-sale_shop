@@ -28,7 +28,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         </record>
         <record model="ir.rule" id="rule_sale1">
             <field name="domain"
-                eval="[('shop', '=', Eval('user', {}).get('shop', -1))]"
+                eval="[('shop', 'in', Eval('user', {}).get('shops', []))]"
                 pyson="1"/>
             <field name="rule_group" ref="rule_group_sale"/>
         </record>
