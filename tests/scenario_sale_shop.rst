@@ -18,10 +18,10 @@ Create database::
 
 Install sale::
 
-    >>> Module = Model.get('ir.module.module')
+    >>> Module = Model.get('ir.module')
     >>> sale_shop_module, = Module.find([('name', '=', 'sale_shop')])
     >>> Module.install([sale_shop_module.id], config.context)
-    >>> Wizard('ir.module.module.install_upgrade').execute('upgrade')
+    >>> Wizard('ir.module.install_upgrade').execute('upgrade')
 
 Create company::
 
