@@ -2,7 +2,7 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
 from trytond import backend
-from trytond.model import fields
+from trytond.model import fields, Unique
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Bool, Eval, Or
@@ -29,10 +29,11 @@ class Sale:
     @classmethod
     def __setup__(cls):
         super(Sale, cls).__setup__()
+        t = cls.__table__()
         cls._sql_constraints.extend([
-            ('reference_uniq', 'UNIQUE(shop, reference)',
-             'There is another sale with the same reference.\n'
-             'The reference of the sale must be unique!')
+            ('reference_uniq', Unique(t, t.shop, t.reference),
+                'There is another sale with the same reference.\n'
+                'The reference of the sale must be unique!')
             ])
 
         shipment_addr_domain = cls.shipment_address.domain[:]
