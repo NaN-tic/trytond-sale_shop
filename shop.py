@@ -65,7 +65,7 @@ class SaleShop(ModelSQL, ModelView):
         company_table = Company.__table__()
 
         super(SaleShop, cls).__register__(module_name)
-        cursor = Transaction().cursor
+        cursor = Transaction().connection.cursor()
         is_sqlite = 'backend.sqlite.table.TableHandler' in str(TableHandler)
         if not is_sqlite:
             # SQLite doesn't support this query as it generates and update

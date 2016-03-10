@@ -63,8 +63,7 @@ class Sale:
     @classmethod
     def __register__(cls, module_name):
         TableHandler = backend.get('TableHandler')
-        cursor = Transaction().cursor
-        table = TableHandler(cursor, cls, module_name)
+        table = TableHandler(cls, module_name)
         if not table.column_exist('shop'):
             table.add_raw_column(
                     'shop',
