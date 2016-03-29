@@ -9,12 +9,12 @@ from trytond.pyson import Bool, Eval, Or
 import logging
 
 __all__ = ['Sale']
-__metaclass__ = PoolMeta
 
 logger = logging.getLogger(__name__)
 
 
 class Sale:
+    __metaclass__ = PoolMeta
     __name__ = 'sale.sale'
     shop = fields.Many2One('sale.shop', 'Shop', required=True, domain=[
             ('id', 'in', Eval('context', {}).get('shops', [])),

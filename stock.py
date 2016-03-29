@@ -6,10 +6,10 @@ from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval
 
 __all__ = ['ShipmentOut', 'ShipmentOutReturn']
-__metaclass__ = PoolMeta
 
 
 class ShipmentOut:
+    __metaclass__ = PoolMeta
     __name__ = 'stock.shipment.out'
 
     shop_addresses = fields.Function(fields.Many2Many('party.address', None,
@@ -45,6 +45,7 @@ class ShipmentOut:
 
 
 class ShipmentOutReturn:
+    __metaclass__ = PoolMeta
     __name__ = 'stock.shipment.out.return'
 
     shop_addresses = fields.Function(fields.Many2Many('party.address', None,
