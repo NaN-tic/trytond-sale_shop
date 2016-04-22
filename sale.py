@@ -31,9 +31,9 @@ class Sale:
         super(Sale, cls).__setup__()
         t = cls.__table__()
         cls._sql_constraints.extend([
-            ('reference_uniq', Unique(t, t.shop, t.reference),
-                'There is another sale with the same reference.\n'
-                'The reference of the sale must be unique!')
+            ('number_uniq', Unique(t, t.shop, t.number),
+                'There is another sale with the same number.\n'
+                'The number of the sale must be unique!')
             ])
 
         shipment_addr_domain = cls.shipment_address.domain[:]
@@ -75,6 +75,11 @@ class Sale:
                     'with SQL:')
             logger.warning(
                 'UPDATE sale_sale set shop = 1;')
+
+        # Migration from 3.8: remove reference constraint
+        if not table.column_exist('number'):
+            table.drop_constraint('reference_uniq')
+
         super(Sale, cls).__register__(module_name)
 
     @staticmethod
