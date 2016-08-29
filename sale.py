@@ -178,7 +178,7 @@ class Sale:
                 self.payment_term.rec_name = self.shop.payment_term.rec_name
 
     @classmethod
-    def set_reference(cls, sales):
+    def set_number(cls, sales):
         '''
         Fill the reference field with the sale shop or sale config sequence
         '''
@@ -190,16 +190,16 @@ class Sale:
         config = Config(1)
         user = User(Transaction().user)
         for sale in sales:
-            if sale.reference:
+            if sale.number:
                 continue
             if sale.shop:
-                reference = Sequence.get_id(sale.shop.sale_sequence.id)
+                number = Sequence.get_id(sale.shop.sale_sequence.id)
             elif user.shop:
-                reference = Sequence.get_id(user.shop.sale_sequence.id)
+                number = Sequence.get_id(user.shop.sale_sequence.id)
             else:
-                reference = Sequence.get_id(config.sale_sequence.id)
+                number = Sequence.get_id(config.sale_sequence.id)
             cls.write([sale], {
-                    'reference': reference,
+                    'number': number,
                     })
 
     @classmethod
