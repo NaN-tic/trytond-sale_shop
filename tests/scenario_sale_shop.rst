@@ -15,6 +15,7 @@ Imports::
     ...     create_chart, get_accounts, create_tax
     >>> from.trytond.modules.account_invoice.tests.tools import \
     ...     set_fiscalyear_invoice_sequences, create_payment_term
+    >>> from trytond.modules.sale_shop.tests.tools import create_shop
     >>> today = datetime.date.today()
 
 Create database::
@@ -64,6 +65,19 @@ Create tax::
     >>> tax = create_tax(Decimal('.10'))
     >>> tax.save()
 
+Create payment term::
+
+    >>> payment_term = create_payment_term()
+    >>> payment_term.save()
+
+Create product price list::
+
+    >>> ProductPriceList = Model.get('product.price_list')
+    >>> product_price_list = ProductPriceList()
+    >>> product_price_list.name = 'Price List'
+    >>> product_price_list.company = company
+    >>> product_price_list.save()
+
 Create parties::
 
     >>> Party = Model.get('party.party')
@@ -99,11 +113,6 @@ Create product::
     >>> product.template = template
     >>> product.save()
 
-Create payment term::
-
-    >>> payment_term = create_payment_term()
-    >>> payment_term.save()
-
 Create an Inventory::
 
     >>> Inventory = Model.get('stock.inventory')
@@ -124,33 +133,9 @@ Create an Inventory::
     >>> inventory.state
     u'done'
 
-Create Product Price List::
-
-    >>> ProductPriceList = Model.get('product.price_list')
-    >>> product_price_list = ProductPriceList()
-    >>> product_price_list.name = 'Price List'
-    >>> product_price_list.company = company
-    >>> product_price_list.save()
-
 Create Sale Shop::
 
-    >>> Shop = Model.get('sale.shop')
-    >>> Sequence = Model.get('ir.sequence')
-    >>> Location = Model.get('stock.location')
-    >>> shop = Shop()
-    >>> shop.name = 'Sale Shop'
-    >>> warehouse, = Location.find([
-    ...         ('type', '=', 'warehouse'),
-    ...         ])
-    >>> shop.warehouse = warehouse
-    >>> shop.price_list = product_price_list
-    >>> shop.payment_term = payment_term
-    >>> sequence, = Sequence.find([
-    ...         ('code', '=', 'sale.sale'),
-    ...         ])
-    >>> shop.sale_sequence = sequence
-    >>> shop.sale_invoice_method = 'shipment'
-    >>> shop.sale_shipment_method = 'order'
+    >>> shop = create_shop(payment_term, product_price_list)
     >>> shop.save()
 
 Save Sale Shop User::
@@ -177,3 +162,5 @@ Sale 5 products::
     >>> sale_line.product = product
     >>> sale_line.quantity = 3.0
     >>> sale.save()
+    >>> sale.state
+    u'draft'
