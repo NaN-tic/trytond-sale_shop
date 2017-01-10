@@ -14,7 +14,8 @@ class User:
     shops = fields.Many2Many('sale.shop-res.user', 'user', 'shop', 'Shops')
     shop = fields.Many2One('sale.shop', 'Shop', domain=[
             ('id', 'in', Eval('shops', [])),
-            ], depends=['shops'])
+            ('company', '=', Eval('company', None)),
+            ], depends=['shops', 'company'])
 
     @classmethod
     def __setup__(cls):
@@ -31,3 +32,9 @@ class User:
         if self.shop:
             status += ' - %s' % (self.shop.rec_name)
         return status
+
+    @fields.depends('company')
+    def on_change_with_shop(self, name=None):
+        if self.company and self.shop:
+            if self.shop.company.id != self.company.id:
+                return
