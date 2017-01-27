@@ -117,13 +117,23 @@ class Sale:
 
     @staticmethod
     def default_warehouse():
-        User = Pool().get('res.user')
+        pool = Pool()
+        User = pool.get('res.user')
+        Shop =  pool.get('sale.shop')
+        Location = pool.get('stock.location')
+
+        if Transaction().context.get('shop'):
+            shop = Shop(Transaction().context.get('shop'))
+            return shop.warehouse.id
+
         user = User(Transaction().user)
         if user.shop:
             return user.shop.warehouse.id
-        else:
-            Location = Pool().get('stock.location')
-            return Location.search([('type', '=', 'warehouse')], limit=1)[0].id
+
+        warehouse, = Location.search([
+            ('type', '=', 'warehouse'),
+            ], limit=1)
+        return warehouse.id
 
     @staticmethod
     def default_price_list():
