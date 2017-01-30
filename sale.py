@@ -144,7 +144,13 @@ class Sale:
     @staticmethod
     def default_payment_term():
         User = Pool().get('res.user')
+        Shop = Pool().get('sale.shop')
         user = User(Transaction().user)
+        context = Transaction().context
+        if 'shop' in context:
+            shop = Shop(context['shop'])
+            if shop.payment_term:
+            	return shop.payment_term.id
         return user.shop.payment_term.id if user.shop else None
 
     @staticmethod
