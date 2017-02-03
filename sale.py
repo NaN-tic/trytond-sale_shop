@@ -143,7 +143,7 @@ class Sale:
         Shop = Pool().get('sale.shop')
         user = User(Transaction().user)
         context = Transaction().context
-        if 'shop' in context:
+        if context.get('shop'):
             shop = Shop(context['shop'])
             if shop.payment_term:
             	return shop.payment_term.id
