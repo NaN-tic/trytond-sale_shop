@@ -5,7 +5,7 @@ from trytond import backend
 from trytond.model import fields, Unique
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
-from trytond.pyson import Bool, Eval, Or
+from trytond.pyson import Bool, Eval
 import logging
 
 __all__ = ['Sale']
@@ -20,8 +20,8 @@ class Sale:
             ('id', 'in', Eval('context', {}).get('shops', [])),
             ],
         states={
-            'readonly': Or(Bool(Eval('reference')), Bool(Eval('lines'))),
-            }, depends=['reference', 'lines'])
+            'readonly': (Eval('state') != 'draft') | Bool(Eval('reference')),
+        }, depends=['reference', 'state'])
     shop_address = fields.Function(fields.Many2One('party.address',
             'Shop Address'),
         'on_change_with_shop_address')
