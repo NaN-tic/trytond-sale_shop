@@ -57,25 +57,12 @@ class Sale:
                     'Sale have not related a shop'),
                 'edit_sale_by_shop': ('You cannot edit this order because you '
                     'do not have permission to edit in this shop.'),
-            })
-
+                })
 
     @classmethod
     def __register__(cls, module_name):
         TableHandler = backend.get('TableHandler')
         table = TableHandler(cls, module_name)
-        if not table.column_exist('shop'):
-            table.add_raw_column(
-                    'shop',
-                    cls.shop.sql_type(),
-                    cls.shop.sql_format, None, None
-                    )
-            logger.warning(
-                'Create a Sale Shop and assign current sales with this shop '
-                    'with SQL:')
-            logger.warning(
-                'UPDATE sale_sale set shop = 1;')
-
         # Migration from 3.8: remove reference constraint
         if not table.column_exist('number'):
             table.drop_constraint('reference_uniq')
@@ -119,7 +106,7 @@ class Sale:
     def default_warehouse():
         pool = Pool()
         User = pool.get('res.user')
-        Shop =  pool.get('sale.shop')
+        Shop = pool.get('sale.shop')
         Location = pool.get('stock.location')
 
         if Transaction().context.get('shop'):
@@ -150,7 +137,7 @@ class Sale:
         if context.get('shop'):
             shop = Shop(context['shop'])
             if shop.payment_term:
-            	return shop.payment_term.id
+                return shop.payment_term.id
         return user.shop.payment_term.id if user.shop else None
 
     @staticmethod
@@ -225,7 +212,7 @@ class Sale:
             User = Pool().get('res.user')
             user = User(Transaction().user)
             vals = vals.copy()
-            if not 'shop' in vals:
+            if 'shop' not in vals:
                 if not user.shop:
                     cls.raise_user_error('not_sale_shop', (
                             user.rec_name,)
@@ -247,6 +234,6 @@ class Sale:
                 for sale in sales:
                     if not sale.shop:
                         cls.raise_user_error('sale_not_shop')
-                    if not sale.shop in user.shops:
+                    if sale.shop not in user.shops:
                         cls.raise_user_error('edit_sale_by_shop')
         super(Sale, cls).write(*args)

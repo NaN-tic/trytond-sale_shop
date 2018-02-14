@@ -1,8 +1,10 @@
 # This file is part sale_shop module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
+from sql import Null, Table
+
 from trytond.model import ModelView, ModelSQL, fields
-from trytond.pyson import If, Eval, Bool
+from trytond.pyson import If, Eval
 from trytond.transaction import Transaction
 from trytond.pool import Pool
 from trytond import backend
@@ -26,26 +28,23 @@ class SaleShop(ModelSQL, ModelView):
         required=True)
     payment_term = fields.Many2One('account.invoice.payment_term',
         'Payment Term', required=True)
-    sale_sequence = fields.Property(fields.Many2One('ir.sequence',
-            'Sale Reference Sequence', domain=[
-                ('company', 'in', [Eval('context', {}).get('company', 0),
-                        None]),
-                ('code', '=', 'sale.sale'),
-                ], required=True))
-    sale_invoice_method = fields.Property(fields.Selection([
-                ('manual', 'Manual'),
-                ('order', 'On Order Processed'),
-                ('shipment', 'On Shipment Sent')
-                ], 'Sale Invoice Method', states={
-                'required': Bool(Eval('context', {}).get('company', 0)),
-                }))
-    sale_shipment_method = fields.Property(fields.Selection([
-                ('manual', 'Manual'),
-                ('order', 'On Order Processed'),
-                ('invoice', 'On Invoice Paid'),
-                ], 'Sale Shipment Method', states={
-                'required': Bool(Eval('context', {}).get('company', 0)),
-                }))
+    sale_sequence = fields.Many2One(
+        'ir.sequence', 'Sale Reference Sequence', required=True,
+        domain=[
+            ('company', 'in', [Eval('company', -1), None]),
+            ('code', '=', 'sale.sale'),
+            ],
+        depends=['company'])
+    sale_invoice_method = fields.Selection([
+            ('manual', 'Manual'),
+            ('order', 'On Order Processed'),
+            ('shipment', 'On Shipment Sent')
+            ], 'Sale Invoice Method', required=True)
+    sale_shipment_method = fields.Selection([
+            ('manual', 'Manual'),
+            ('order', 'On Order Processed'),
+            ('invoice', 'On Invoice Paid'),
+            ], 'Sale Shipment Method', required=True)
     company = fields.Many2One('company.company', 'Company', required=True,
         domain=[
             ('id', If(Eval('context', {}).contains('company'), '=', '!='),
@@ -58,24 +57,92 @@ class SaleShop(ModelSQL, ModelView):
 
     @classmethod
     def __register__(cls, module_name):
-        pool = Pool()
         TableHandler = backend.get('TableHandler')
+        connection = Transaction().connection
+        pool = Pool()
         Company = pool.get('company.company')
+        Field = pool.get('ir.model.field')
+        Model = pool.get('ir.model')
         shop_table = cls.__table__()
         company_table = Company.__table__()
+        table_h = TableHandler(cls, module_name)
+        table = cls.__table__()
+        field = Field.__table__()
+        model = Model.__table__()
+        cursor = connection.cursor()
+        update = connection.cursor()
+
+        property_exist = TableHandler.table_exist('ir_property')
+        if property_exist:
+            property_ = Table('ir_property')
+        sale_sequence_exist = table_h.column_exist('sale_sequence')
+        sale_invoice_method_exist = table_h.column_exist('sale_invoice_method')
+        sale_shipment_method_exist = table_h.column_exist(
+            'sale_shipment_method')
 
         super(SaleShop, cls).__register__(module_name)
-        cursor = Transaction().connection.cursor()
-        is_sqlite = 'backend.sqlite.table.TableHandler' in str(TableHandler)
-        if not is_sqlite:
+        if backend.name() != 'sqlite':
             # SQLite doesn't support this query as it generates and update
             # with an alias (AS) which is not valid on SQLite
             query = shop_table.update(columns=[shop_table.currency],
                 values=[company_table.currency],
                 from_=[company_table],
                 where=((shop_table.company == company_table.id)
-                    & (shop_table.currency == None)))
+                    & (shop_table.currency == Null)))
             cursor.execute(*query)
+
+        # Migration to remove Property
+        if not sale_sequence_exist and property_exist:
+            cursor.execute(*property_
+                .join(field, condition=property_.field == field.id)
+                .join(model, condition=field.model == model.id)
+                .select(
+                    property_.res,
+                    property_.value,
+                    where=property_.res.like(cls.__name__ + ',%')
+                    & (field.name == 'sale_sequence')
+                    & (model.model == cls.__name__)))
+            for res, value in cursor:
+                id_ = int(res.split(',')[1])
+                value = int(value.split(',')[1]) if value else None
+                update.execute(*table.update(
+                        [table.sale_sequence],
+                        [value],
+                        where=table.id == id_))
+        if not sale_invoice_method_exist and property_exist:
+            cursor.execute(*property_
+                .join(field, condition=property_.field == field.id)
+                .join(model, condition=field.model == model.id)
+                .select(
+                    property_.res,
+                    property_.value,
+                    where=property_.res.like(cls.__name__ + ',%')
+                    & (field.name == 'sale_invoice_method')
+                    & (model.model == cls.__name__)))
+            for res, value in cursor:
+                id_ = int(res.split(',')[1])
+                value = value.split(',')[1] if value else None
+                update.execute(*table.update(
+                        [table.sale_invoice_method],
+                        [value],
+                        where=table.id == id_))
+        if not sale_shipment_method_exist and property_exist:
+            cursor.execute(*property_
+                .join(field, condition=property_.field == field.id)
+                .join(model, condition=field.model == model.id)
+                .select(
+                    property_.res,
+                    property_.value,
+                    where=property_.res.like(cls.__name__ + ',%')
+                    & (field.name == 'sale_shipment_method')
+                    & (model.model == cls.__name__)))
+            for res, value in cursor:
+                id_ = int(res.split(',')[1])
+                value = value.split(',')[1] if value else None
+                update.execute(*table.update(
+                        [table.sale_shipment_method],
+                        [value],
+                        where=table.id == id_))
 
     @staticmethod
     def default_currency():
@@ -102,11 +169,9 @@ class SaleShop(ModelSQL, ModelView):
 
     @fields.depends('company')
     def on_change_with_company_party(self, name=None):
-        Company = Pool().get('company.company')
-        company = self.company
-        if not company:
-            company = Company(SaleShop.default_company())
-        return company and company.party.id or None
+        if self.company and self.company.party:
+            return self.company.party.id
+        return None
 
 
 class SaleShopResUser(ModelSQL):
