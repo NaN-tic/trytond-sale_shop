@@ -17,8 +17,8 @@ class Sale:
             ('id', 'in', Eval('context', {}).get('shops', [])),
             ],
         states={
-            'readonly': (Eval('state') != 'draft') | Bool(Eval('reference')),
-        }, depends=['reference', 'state'])
+            'readonly': (Eval('state') != 'draft') | Bool(Eval('number')),
+        }, depends=['number', 'state'])
     shop_address = fields.Function(fields.Many2One('party.address',
             'Shop Address'),
         'on_change_with_shop_address')
