@@ -1,22 +1,6 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
-
-msgctxt "error:sale.sale:"
-msgid "Go to user preferences and select a shop (\"%s\")"
-msgstr ""
-"Bitte wählen Sie unter den Benutzereinstellungen eine Filiale aus (\"%s\")"
-
-msgctxt "error:sale.sale:"
-msgid "Sale have not related a shop"
-msgstr "Verkauf ohne verknüpfte Filiale"
-
-msgctxt "error:sale.sale:"
-msgid ""
-"You cannot edit this order because you do not have permission to edit in "
-"this shop."
-msgstr ""
-"Keine Berechtigung für die Bearbeitung von Bestellungen dieser Filiale"
 
 msgctxt "field:res.user,shop:"
 msgid "Shop"

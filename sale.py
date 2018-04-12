@@ -6,11 +6,8 @@ from trytond.model import fields, Unique
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Bool, Eval
-import logging
 
 __all__ = ['Sale']
-
-logger = logging.getLogger(__name__)
 
 
 class Sale:
@@ -35,7 +32,6 @@ class Sale:
                 'There is another sale with the same number.\n'
                 'The number of the sale must be unique!')
             ])
-
         shipment_addr_domain = cls.shipment_address.domain[:]
         if shipment_addr_domain:
             cls.shipment_address.domain = [
@@ -46,18 +42,8 @@ class Sale:
         else:
             cls.shipment_address.domain = [('id', '=', Eval('shop_address'))]
         cls.shipment_address.depends.append('shop_address')
-
         cls.currency.states['readonly'] |= Eval('shop')
         cls.currency.depends.append('shop')
-
-        cls._error_messages.update({
-                'not_sale_shop': (
-                    'Go to user preferences and select a shop ("%s")'),
-                'sale_not_shop': (
-                    'Sale have not related a shop'),
-                'edit_sale_by_shop': ('You cannot edit this order because you '
-                    'do not have permission to edit in this shop.'),
-                })
 
     @classmethod
     def __register__(cls, module_name):
@@ -72,6 +58,7 @@ class Sale:
     @staticmethod
     def default_company():
         User = Pool().get('res.user')
+
         user = User(Transaction().user)
         return user.shop.company.id if user.shop else \
             Transaction().context.get('company')
@@ -79,12 +66,14 @@ class Sale:
     @staticmethod
     def default_shop():
         User = Pool().get('res.user')
+
         user = User(Transaction().user)
         return user.shop.id if user.shop else None
 
     @staticmethod
     def default_invoice_method():
         User = Pool().get('res.user')
+
         user = User(Transaction().user)
         if not user.shop:
             Config = Pool().get('sale.configuration')
@@ -95,6 +84,7 @@ class Sale:
     @staticmethod
     def default_shipment_method():
         User = Pool().get('res.user')
+
         user = User(Transaction().user)
         if not user.shop:
             Config = Pool().get('sale.configuration')
@@ -125,13 +115,16 @@ class Sale:
     @staticmethod
     def default_price_list():
         User = Pool().get('res.user')
+
         user = User(Transaction().user)
         return user.shop.price_list.id if user.shop else None
 
     @staticmethod
     def default_payment_term():
-        User = Pool().get('res.user')
-        Shop = Pool().get('sale.shop')
+        pool = Pool()
+        User = pool.get('res.user')
+        Shop = pool.get('sale.shop')
+
         user = User(Transaction().user)
         context = Transaction().context
         if context.get('shop'):
@@ -143,6 +136,7 @@ class Sale:
     @staticmethod
     def default_shop_address():
         User = Pool().get('res.user')
+
         user = User(Transaction().user)
         return (user.shop and user.shop.address and
             user.shop.address.id or None)
@@ -204,36 +198,3 @@ class Sale:
             cls.write([sale], {
                     'number': number,
                     })
-
-    @classmethod
-    def create(cls, vlist):
-        vlist2 = []
-        for vals in vlist:
-            User = Pool().get('res.user')
-            user = User(Transaction().user)
-            vals = vals.copy()
-            if 'shop' not in vals:
-                if not user.shop:
-                    cls.raise_user_error('not_sale_shop', (
-                            user.rec_name,)
-                            )
-                vals['shop'] = user.shop.id
-            vlist2.append(vals)
-        return super(Sale, cls).create(vlist2)
-
-    @classmethod
-    def write(cls, *args):
-        '''
-        Only edit Sale users available edit in this shop
-        '''
-        User = Pool().get('res.user')
-        user = User(Transaction().user)
-        if user.id != 0:
-            actions = iter(args)
-            for sales, _ in zip(actions, actions):
-                for sale in sales:
-                    if not sale.shop:
-                        cls.raise_user_error('sale_not_shop')
-                    if sale.shop not in user.shops:
-                        cls.raise_user_error('edit_sale_by_shop')
-        super(Sale, cls).write(*args)

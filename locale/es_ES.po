@@ -1,30 +1,6 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
-
-msgctxt "error:sale.sale:"
-msgid "Go to user preferences and select a shop (\"%s\")"
-msgstr "Seleccione una tienda en sus preferencias (\"%s\")"
-
-msgctxt "error:sale.sale:"
-msgid "Sale have not related a shop"
-msgstr "El pedido no está relacionado con una tienda"
-
-msgctxt "error:sale.sale:"
-msgid ""
-"There is another sale with the same number.\n"
-"The number of the sale must be unique!"
-msgstr ""
-"Hay otro pedido con el mismo número.\n"
-"El número debe ser única por tienda."
-
-msgctxt "error:sale.sale:"
-msgid ""
-"You cannot edit this order because you do not have permission to edit in "
-"this shop."
-msgstr ""
-"No puede editar este pedido porque no dispone de permiso de edición en esta "
-"tienda."
 
 msgctxt "field:res.user,shop:"
 msgid "Shop"
