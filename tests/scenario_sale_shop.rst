@@ -28,11 +28,6 @@ Create company::
     >>> _ = create_company()
     >>> company = get_company()
 
-Reload the context::
-
-    >>> User = Model.get('res.user')
-    >>> config._context = User.get_preferences(True, config.context)
-
 Create fiscal year::
 
     >>> fiscalyear = set_fiscalyear_invoice_sequences(
@@ -46,12 +41,6 @@ Create chart of accounts::
     >>> revenue = accounts['revenue']
     >>> expense = accounts['expense']
     >>> cash = accounts['cash']
-
-    >>> Journal = Model.get('account.journal')
-    >>> cash_journal, = Journal.find([('type', '=', 'cash')])
-    >>> cash_journal.credit_account = cash
-    >>> cash_journal.debit_account = cash
-    >>> cash_journal.save()
 
 Create tax::
 
@@ -97,14 +86,15 @@ Create product::
     >>> template.default_uom = unit
     >>> template.type = 'goods'
     >>> template.list_price = Decimal('40')
-    >>> template.cost_price = Decimal('25')
     >>> template.account_expense = expense
     >>> template.account_revenue = revenue
     >>> template.salable = True
     >>> template.customer_taxes.append(tax)
+    >>> product, = template.products
+    >>> product.cost_price = Decimal('25')
     >>> template.save()
     >>> product.template = template
-    >>> product.save()
+    >>> product, = template.products
 
 Create an Inventory::
 
