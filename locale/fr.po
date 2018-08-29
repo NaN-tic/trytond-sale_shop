@@ -59,7 +59,7 @@ msgid "Payment Term"
 msgstr "Conditions de paiement"
 
 msgctxt "field:sale.shop,price_list:"
-msgid "Pricelist"
+msgid "Price List"
 msgstr "Tarif"
 
 msgctxt "field:sale.shop,rec_name:"
