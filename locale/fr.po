@@ -18,12 +18,10 @@ msgctxt "field:sale.sale,shop_address:"
 msgid "Shop Address"
 msgstr ""
 
-#, fuzzy
 msgctxt "field:sale.shop,active:"
 msgid "Active"
 msgstr "Actif"
 
-#, fuzzy
 msgctxt "field:sale.shop,address:"
 msgid "Address"
 msgstr "Adresse"
@@ -32,7 +30,6 @@ msgctxt "field:sale.shop,company:"
 msgid "Company"
 msgstr "Société"
 
-#, fuzzy
 msgctxt "field:sale.shop,company_party:"
 msgid "Company Party"
 msgstr "Tiers de la société"
@@ -45,7 +42,6 @@ msgctxt "field:sale.shop,create_uid:"
 msgid "Create User"
 msgstr "Créé par "
 
-#, fuzzy
 msgctxt "field:sale.shop,currency:"
 msgid "Currency"
 msgstr "Devises"
@@ -75,7 +71,7 @@ msgid "Sale Invoice Method"
 msgstr "Méthode de facturation"
 
 msgctxt "field:sale.shop,sale_sequence:"
-msgid "Sale Reference Sequence"
+msgid "Sale Sequence"
 msgstr "Séquence de référence de vente"
 
 msgctxt "field:sale.shop,sale_shipment_method:"
@@ -190,7 +186,6 @@ msgctxt "view:sale.shop:"
 msgid "Shops"
 msgstr "Magasins"
 
-#, fuzzy
 msgctxt "view:sale.shop:"
 msgid "Users"
 msgstr "Utilisateurs"
