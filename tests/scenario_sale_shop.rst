@@ -113,8 +113,8 @@ Create an Inventory::
     >>> inventory.save()
     >>> inventory_line.save()
     >>> Inventory.confirm([inventory.id], config.context)
-    >>> inventory.state
-    u'done'
+    >>> inventory.state == 'done'
+    True
 
 Create Sale Shop::
 
@@ -123,6 +123,7 @@ Create Sale Shop::
 
 Save Sale Shop User::
 
+    >>> User = Model.get('res.user')
     >>> user, = User.find([])
     >>> user.shops.append(shop)
     >>> user.shop = shop
@@ -145,5 +146,5 @@ Sale 5 products::
     >>> sale_line.product = product
     >>> sale_line.quantity = 3.0
     >>> sale.save()
-    >>> sale.state
-    u'draft'
+    >>> sale.state == 'draft'
+    True
