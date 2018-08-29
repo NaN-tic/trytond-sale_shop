@@ -67,7 +67,7 @@ msgid "Sale Invoice Method"
 msgstr "Rechnungsstellung Verkauf"
 
 msgctxt "field:sale.shop,sale_sequence:"
-msgid "Sale Reference Sequence"
+msgid "Sale Sequence"
 msgstr "Nummernkreis Verkauf"
 
 msgctxt "field:sale.shop,sale_shipment_method:"

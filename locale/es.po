@@ -71,7 +71,7 @@ msgid "Sale Invoice Method"
 msgstr "Política de facturación"
 
 msgctxt "field:sale.shop,sale_sequence:"
-msgid "Sale Reference Sequence"
+msgid "Sale Sequence"
 msgstr "Secuencia venta"
 
 msgctxt "field:sale.shop,sale_shipment_method:"

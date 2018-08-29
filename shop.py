@@ -29,7 +29,7 @@ class SaleShop(ModelSQL, ModelView):
     payment_term = fields.Many2One('account.invoice.payment_term',
         'Payment Term', required=True)
     sale_sequence = fields.Many2One(
-        'ir.sequence', 'Sale Reference Sequence', required=True,
+        'ir.sequence', 'Sale Sequence', required=True,
         domain=[
             ('company', 'in', [Eval('company', -1), None]),
             ('code', '=', 'sale.sale'),
