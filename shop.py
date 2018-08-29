@@ -24,7 +24,7 @@ class SaleShop(ModelSQL, ModelView):
     warehouse = fields.Many2One('stock.location', "Warehouse", required=True,
         domain=[('type', '=', 'warehouse')])
     currency = fields.Many2One('currency.currency', 'Currency', required=True)
-    price_list = fields.Many2One('product.price_list', 'Pricelist',
+    price_list = fields.Many2One('product.price_list', 'Price List',
         required=True)
     payment_term = fields.Many2One('account.invoice.payment_term',
         'Payment Term', required=True)
