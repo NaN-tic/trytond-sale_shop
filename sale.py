@@ -10,8 +10,7 @@ from trytond.pyson import Bool, Eval
 __all__ = ['Sale']
 
 
-class Sale:
-    __metaclass__ = PoolMeta
+class Sale(metaclass=PoolMeta):
     __name__ = 'sale.sale'
     shop = fields.Many2One('sale.shop', 'Shop', required=True, domain=[
             ('id', 'in', Eval('context', {}).get('shops', [])),
