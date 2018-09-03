@@ -71,8 +71,12 @@ Create parties::
 Create category::
 
     >>> ProductCategory = Model.get('product.category')
-    >>> category = ProductCategory(name='Category')
-    >>> category.save()
+    >>> account_category = ProductCategory(name='Category')
+    >>> account_category.accounting = True
+    >>> account_category.account_expense = expense
+    >>> account_category.account_revenue = revenue
+    >>> account_category.customer_taxes.append(tax)
+    >>> account_category.save()
 
 Create product::
 
@@ -80,21 +84,17 @@ Create product::
     >>> unit, = ProductUom.find([('name', '=', 'Unit')])
     >>> ProductTemplate = Model.get('product.template')
     >>> Product = Model.get('product.product')
-    >>> product = Product()
     >>> template = ProductTemplate()
     >>> template.name = 'product'
     >>> template.default_uom = unit
     >>> template.type = 'goods'
     >>> template.list_price = Decimal('40')
-    >>> template.account_expense = expense
-    >>> template.account_revenue = revenue
+    >>> template.account_category = account_category
     >>> template.salable = True
-    >>> template.customer_taxes.append(tax)
+    >>> template.save()
     >>> product, = template.products
     >>> product.cost_price = Decimal('25')
-    >>> template.save()
-    >>> product.template = template
-    >>> product, = template.products
+    >>> product.save()
 
 Create an Inventory::
 
