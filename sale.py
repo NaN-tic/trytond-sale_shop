@@ -43,6 +43,8 @@ class Sale(metaclass=PoolMeta):
         cls.shipment_address.depends.append('shop_address')
         cls.currency.states['readonly'] |= Eval('shop')
         cls.currency.depends.append('shop')
+        if 'shop' not in cls.party.on_change:
+            cls.party.on_change.add('shop')
 
     @classmethod
     def __register__(cls, module_name):
@@ -142,7 +144,7 @@ class Sale(metaclass=PoolMeta):
 
     @fields.depends('shop', 'party')
     def on_change_shop(self):
-        if not self.shop:
+        if not hasattr(self, 'shop') or not self.shop:
             return
         for fname in ('company', 'warehouse', 'currency', 'payment_term'):
             fvalue = getattr(self.shop, fname)
@@ -161,7 +163,6 @@ class Sale(metaclass=PoolMeta):
         return (self.shop and self.shop.address and
             self.shop.address.id or None)
 
-    @fields.depends('shop')
     def on_change_party(self):
         super(Sale, self).on_change_party()
 
