@@ -58,7 +58,8 @@ class Sale:
                 'edit_sale_by_shop': ('You cannot edit this order because you '
                     'do not have permission to edit in this shop.'),
             })
-
+        if 'shop' not in cls.party.on_change:
+            cls.party.on_change.add('shop')
 
     @classmethod
     def __register__(cls, module_name):
@@ -119,7 +120,7 @@ class Sale:
     def default_warehouse():
         pool = Pool()
         User = pool.get('res.user')
-        Shop =  pool.get('sale.shop')
+        Shop = pool.get('sale.shop')
         Location = pool.get('stock.location')
 
         if Transaction().context.get('shop'):
@@ -150,7 +151,7 @@ class Sale:
         if context.get('shop'):
             shop = Shop(context['shop'])
             if shop.payment_term:
-            	return shop.payment_term.id
+                return shop.payment_term.id
         return user.shop.payment_term.id if user.shop else None
 
     @staticmethod
@@ -162,7 +163,7 @@ class Sale:
 
     @fields.depends('shop', 'party')
     def on_change_shop(self):
-        if not self.shop:
+        if not hasattr(self, 'shop') or not self.shop:
             return
         for fname in ('company', 'warehouse', 'currency', 'payment_term'):
             fvalue = getattr(self.shop, fname)
@@ -181,10 +182,8 @@ class Sale:
         return (self.shop and self.shop.address and
             self.shop.address.id or None)
 
-    @fields.depends('shop')
     def on_change_party(self):
         super(Sale, self).on_change_party()
-
         if self.shop:
             if not self.price_list and self.invoice_address:
                 self.price_list = self.shop.price_list.id
