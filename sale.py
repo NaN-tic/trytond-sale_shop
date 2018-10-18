@@ -182,9 +182,10 @@ class Sale:
         return (self.shop and self.shop.address and
             self.shop.address.id or None)
 
+    @fields.depends('shop')
     def on_change_party(self):
         super(Sale, self).on_change_party()
-        if hasattr(self, 'shop') and self.shop:
+        if self.shop:
             if not self.price_list and self.invoice_address:
                 self.price_list = self.shop.price_list.id
                 self.price_list.rec_name = self.shop.price_list.rec_name
