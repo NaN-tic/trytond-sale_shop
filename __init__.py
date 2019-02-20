@@ -12,8 +12,8 @@ def register():
     Pool.register(
         shop.SaleShop,
         shop.SaleShopResUser,
-        sale.Sale,
         user.User,
+        sale.Sale,
         stock.ShipmentOut,
         stock.ShipmentOutReturn,
         module='sale_shop', type_='model')
