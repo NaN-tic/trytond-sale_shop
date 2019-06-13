@@ -8,5 +8,6 @@ license terms. -->
         position="after">
         <label name="shop"/>
         <field name="shop" widget="selection"/>
+        <field name="shops" invisible="1"/>
     </xpath>
 </data>
