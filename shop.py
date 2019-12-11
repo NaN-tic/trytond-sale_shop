@@ -57,7 +57,6 @@ class SaleShop(ModelSQL, ModelView):
 
     @classmethod
     def __register__(cls, module_name):
-        TableHandler = backend.get('TableHandler')
         connection = Transaction().connection
         pool = Pool()
         Company = pool.get('company.company')
@@ -65,14 +64,14 @@ class SaleShop(ModelSQL, ModelView):
         Model = pool.get('ir.model')
         shop_table = cls.__table__()
         company_table = Company.__table__()
-        table_h = TableHandler(cls, module_name)
+        table_h = backend.TableHandler(cls, module_name)
         table = cls.__table__()
         field = Field.__table__()
         model = Model.__table__()
         cursor = connection.cursor()
         update = connection.cursor()
 
-        property_exist = TableHandler.table_exist('ir_property')
+        property_exist = backend.TableHandler.table_exist('ir_property')
         if property_exist:
             property_ = Table('ir_property')
         sale_sequence_exist = table_h.column_exist('sale_sequence')
@@ -81,7 +80,7 @@ class SaleShop(ModelSQL, ModelView):
             'sale_shipment_method')
 
         super(SaleShop, cls).__register__(module_name)
-        if backend.name() != 'sqlite':
+        if backend.name != 'sqlite':
             # SQLite doesn't support this query as it generates and update
             # with an alias (AS) which is not valid on SQLite
             query = shop_table.update(columns=[shop_table.currency],
