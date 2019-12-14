@@ -5,10 +5,8 @@ Sale Shop Scenario
 Imports::
 
     >>> import datetime
-    >>> from dateutil.relativedelta import relativedelta
     >>> from decimal import Decimal
-    >>> from operator import attrgetter
-    >>> from proteus import config, Model, Wizard
+    >>> from proteus import Model
     >>> from trytond.tests.tools import activate_modules
     >>> from trytond.modules.company.tests.tools import create_company, \
     ...     get_company
