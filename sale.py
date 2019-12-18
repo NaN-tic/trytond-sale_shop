@@ -2,7 +2,7 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
 from trytond import backend
-from trytond.model import fields, Unique
+from trytond.model import fields
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Bool, Eval
@@ -19,18 +19,11 @@ class Sale(metaclass=PoolMeta):
             'readonly': (Eval('state') != 'draft') | Bool(Eval('number')),
         }, depends=['number', 'state'])
     shop_address = fields.Function(fields.Many2One('party.address',
-            'Shop Address'),
-        'on_change_with_shop_address')
+            'Shop Address'), 'on_change_with_shop_address')
 
     @classmethod
     def __setup__(cls):
         super(Sale, cls).__setup__()
-        t = cls.__table__()
-        cls._sql_constraints.extend([
-            ('number_uniq', Unique(t, t.shop, t.number),
-                'There is another sale with the same number.\n'
-                'The number of the sale must be unique!')
-            ])
         shipment_addr_domain = cls.shipment_address.domain[:]
         if shipment_addr_domain:
             cls.shipment_address.domain = [
@@ -41,10 +34,7 @@ class Sale(metaclass=PoolMeta):
         else:
             cls.shipment_address.domain = [('id', '=', Eval('shop_address'))]
         cls.shipment_address.depends.append('shop_address')
-        cls.currency.states['readonly'] |= Eval('shop')
-        cls.currency.depends.append('shop')
-        if 'shop' not in cls.party.on_change:
-            cls.party.on_change.add('shop')
+        cls.party.on_change.add('shop')
 
     @classmethod
     def __register__(cls, module_name):
@@ -52,106 +42,91 @@ class Sale(metaclass=PoolMeta):
         # Migration from 3.8: remove reference constraint
         if not table.column_exist('number'):
             table.drop_constraint('reference_uniq')
+        # Migration from 5.2: remove number constraint
+        table.drop_constraint('number_uniq')
 
         super(Sale, cls).__register__(module_name)
 
-    @staticmethod
-    def default_company():
+    @classmethod
+    def current_shop(cls):
         User = Pool().get('res.user')
 
         user = User(Transaction().user)
-        return user.shop.company.id if user.shop else \
-            Transaction().context.get('company')
+        return user.shop
 
-    @staticmethod
-    def default_shop():
-        User = Pool().get('res.user')
+    @classmethod
+    def default_company(cls):
+        shop = cls.current_shop()
+        if shop:
+            return shop.company.id
+        return super().default_company()
 
-        user = User(Transaction().user)
-        return user.shop.id if user.shop else None
+    @classmethod
+    def default_shop(cls):
+        shop = cls.current_shop()
+        return shop.id if shop else None
 
-    @staticmethod
-    def default_invoice_method():
-        User = Pool().get('res.user')
+    @classmethod
+    def default_invoice_method(cls):
+        shop = cls.current_shop()
+        invoice_method = None
+        if shop:
+            invoice_method = shop.sale_invoice_method
+        if not invoice_method:
+            invoice_method = super().default_invoice_method()
+        return invoice_method
 
-        user = User(Transaction().user)
-        if not user.shop:
-            Config = Pool().get('sale.configuration')
-            config = Config(1)
-            return config.sale_invoice_method
-        return user.shop.sale_invoice_method
+    @classmethod
+    def default_shipment_method(cls):
+        shop = cls.current_shop()
+        shipment_method = None
+        if shop:
+            shipment_method = shop.sale_shipment_method
+        if not shipment_method:
+            shipment_method = super().default_shipment_method()
+        return shipment_method
 
-    @staticmethod
-    def default_shipment_method():
-        User = Pool().get('res.user')
+    @classmethod
+    def default_warehouse(cls):
+        shop = cls.current_shop()
+        warehouse = None
+        if shop and shop.warehouse:
+            warehouse = shop.warehouse.id
+        if not warehouse:
+            warehouse = super().default_warehouse()
+        return warehouse
 
-        user = User(Transaction().user)
-        if not user.shop:
-            Config = Pool().get('sale.configuration')
-            config = Config(1)
-            return config.sale_shipment_method
-        return user.shop.sale_shipment_method
+    @classmethod
+    def default_price_list(cls):
+        shop = cls.current_shop()
+        if not shop or not shop.price_list:
+            return
+        return shop.price_list.id
 
-    @staticmethod
-    def default_warehouse():
-        pool = Pool()
-        User = pool.get('res.user')
-        Shop = pool.get('sale.shop')
-        Location = pool.get('stock.location')
+    @classmethod
+    def default_payment_term(cls):
+        shop = cls.current_shop()
+        if not shop or not shop.payment_term:
+            return
+        return shop.payment_term.id
 
-        if Transaction().context.get('shop'):
-            shop = Shop(Transaction().context.get('shop'))
-            return shop.warehouse.id
-
-        user = User(Transaction().user)
-        if user.shop:
-            return user.shop.warehouse.id
-
-        warehouse, = Location.search([
-            ('type', '=', 'warehouse'),
-            ], limit=1)
-        return warehouse.id
-
-    @staticmethod
-    def default_price_list():
-        User = Pool().get('res.user')
-
-        user = User(Transaction().user)
-        return user.shop.price_list.id if user.shop else None
-
-    @staticmethod
-    def default_payment_term():
-        pool = Pool()
-        User = pool.get('res.user')
-        Shop = pool.get('sale.shop')
-
-        user = User(Transaction().user)
-        context = Transaction().context
-        if context.get('shop'):
-            shop = Shop(context['shop'])
-            if shop.payment_term:
-                return shop.payment_term.id
-        return user.shop.payment_term.id if user.shop else None
-
-    @staticmethod
-    def default_shop_address():
-        User = Pool().get('res.user')
-
-        user = User(Transaction().user)
-        return (user.shop and user.shop.address and
-            user.shop.address.id or None)
+    @classmethod
+    def default_shop_address(cls):
+        shop = cls.current_shop()
+        if not shop or not shop.address:
+            return
+        return shop.address.id
 
     @fields.depends('shop', 'party')
     def on_change_shop(self):
-        if not hasattr(self, 'shop') or not self.shop:
+        if not self.shop:
             return
         for fname in ('company', 'warehouse', 'currency', 'payment_term'):
             fvalue = getattr(self.shop, fname)
             if fvalue:
-                setattr(self, fname, fvalue.id)
-        if ((not self.party or not self.party.sale_price_list)
-                and self.shop.price_list):
-            self.price_list = self.shop.price_list.id
+                setattr(self, fname, fvalue)
+        if not self.party or not self.party.sale_price_list:
+            self.price_list = self.shop.price_list
         if self.shop.sale_invoice_method:
             self.invoice_method = self.shop.sale_invoice_method
         if self.shop.sale_shipment_method:
@@ -162,38 +137,26 @@ class Sale(metaclass=PoolMeta):
         return (self.shop and self.shop.address and
             self.shop.address.id or None)
 
+    @fields.depends('shop')
     def on_change_party(self):
         super(Sale, self).on_change_party()
-
-        if hasattr(self, 'shop') and self.shop:
-            if not self.price_list and self.invoice_address:
-                self.price_list = self.shop.price_list.id
-                self.price_list.rec_name = self.shop.price_list.rec_name
-            if not self.payment_term and self.invoice_address:
-                self.payment_term = self.shop.payment_term.id
-                self.payment_term.rec_name = self.shop.payment_term.rec_name
+        if self.shop:
+            if not self.price_list:
+                self.price_list = self.shop.price_list
+            if not self.payment_term:
+                self.payment_term = self.shop.payment_term
 
     @classmethod
     def set_number(cls, sales):
         '''
         Fill the reference field with the sale shop or sale config sequence
         '''
-        pool = Pool()
-        Sequence = pool.get('ir.sequence')
-        Config = pool.get('sale.configuration')
-        User = Pool().get('res.user')
+        Sequence = Pool().get('ir.sequence')
 
-        config = Config(1)
-        user = User(Transaction().user)
         for sale in sales:
             if sale.number:
                 continue
-            if sale.shop:
-                number = Sequence.get_id(sale.shop.sale_sequence.id)
-            elif user.shop:
-                number = Sequence.get_id(user.shop.sale_sequence.id)
-            else:
-                number = Sequence.get_id(config.sale_sequence.id)
-            cls.write([sale], {
-                    'number': number,
-                    })
+            if sale.shop and sale.shop.sale_sequence:
+                sale.number = Sequence.get_id(sale.shop.sale_sequence.id)
+        # super() saves all sales, so we don't need to do it here
+        super().set_number(sales)

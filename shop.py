@@ -23,28 +23,28 @@ class SaleShop(ModelSQL, ModelView):
             ], depends=['company_party'])
     warehouse = fields.Many2One('stock.location', "Warehouse", required=True,
         domain=[('type', '=', 'warehouse')])
-    currency = fields.Many2One('currency.currency', 'Currency', required=True)
-    price_list = fields.Many2One('product.price_list', 'Price List',
-        required=True)
+    currency = fields.Many2One('currency.currency', 'Currency',)
+    price_list = fields.Many2One('product.price_list', 'Price List')
     payment_term = fields.Many2One('account.invoice.payment_term',
-        'Payment Term', required=True)
+        'Payment Term')
     sale_sequence = fields.Many2One(
-        'ir.sequence', 'Sale Sequence', required=True,
-        domain=[
+        'ir.sequence', 'Sale Sequence', domain=[
             ('company', 'in', [Eval('company', -1), None]),
             ('code', '=', 'sale.sale'),
             ],
         depends=['company'])
     sale_invoice_method = fields.Selection([
+            (None, ''),
             ('manual', 'Manual'),
             ('order', 'On Order Processed'),
             ('shipment', 'On Shipment Sent')
-            ], 'Sale Invoice Method', required=True)
+            ], 'Sale Invoice Method')
     sale_shipment_method = fields.Selection([
+            (None, ''),
             ('manual', 'Manual'),
             ('order', 'On Order Processed'),
             ('invoice', 'On Invoice Paid'),
-            ], 'Sale Shipment Method', required=True)
+            ], 'Sale Shipment Method')
     company = fields.Many2One('company.company', 'Company', required=True,
         domain=[
             ('id', If(Eval('context', {}).contains('company'), '=', '!='),
@@ -142,6 +142,17 @@ class SaleShop(ModelSQL, ModelView):
                         [table.sale_shipment_method],
                         [value],
                         where=table.id == id_))
+
+        # Migration from 5.2: do not require price_list
+        table_h.not_null_action('price_list', action='remove')
+        # Migration from 5.2: do not require payment_term
+        table_h.not_null_action('payment_term', action='remove')
+        # Migration from 5.2: do not require sale_invoice_method
+        table_h.not_null_action('sale_invoice_method', action='remove')
+        # Migration from 5.2: do not require sale_shipment_method
+        table_h.not_null_action('sale_shipment_method', action='remove')
+        # Migration from 5.2: do not require currency
+        table_h.not_null_action('currency', action='remove')
 
     @staticmethod
     def default_currency():
