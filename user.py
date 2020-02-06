@@ -13,7 +13,8 @@ class User(metaclass=PoolMeta):
     shops = fields.Many2Many('sale.shop-res.user', 'user', 'shop', 'Shops')
     shop = fields.Many2One('sale.shop', 'Shop', domain=[
             ('id', 'in', Eval('shops', [])),
-            ], depends=['shops'])
+            ('company', '=', Eval('company', -1),)
+            ], depends=['shops', 'company'])
 
     @classmethod
     def __setup__(cls):
@@ -30,3 +31,7 @@ class User(metaclass=PoolMeta):
         if self.shop:
             status += ' - %s' % (self.shop.rec_name)
         return status
+
+    def on_change_company(self):
+        super().on_change_company()
+        self.shop = None
