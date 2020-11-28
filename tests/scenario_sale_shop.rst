@@ -126,6 +126,7 @@ Save Sale Shop User::
     >>> user.shops.append(shop)
     >>> user.shop = shop
     >>> user.save()
+    >>> config._context = User.get_preferences(True, config.context)
 
 Sale 5 products::
 
