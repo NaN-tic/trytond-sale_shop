@@ -151,12 +151,10 @@ class Sale(metaclass=PoolMeta):
         '''
         Fill the reference field with the sale shop or sale config sequence
         '''
-        Sequence = Pool().get('ir.sequence')
-
         for sale in sales:
             if sale.number:
                 continue
             if sale.shop and sale.shop.sale_sequence:
-                sale.number = Sequence.get_id(sale.shop.sale_sequence.id)
+                sale.number = sale.shop.sale_sequence.get()
         # super() saves all sales, so we don't need to do it here
         super().set_number(sales)
