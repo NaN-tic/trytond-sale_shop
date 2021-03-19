@@ -4,7 +4,7 @@
 from sql import Null, Table
 
 from trytond.model import ModelView, ModelSQL, fields
-from trytond.pyson import If, Eval
+from trytond.pyson import If, Eval, Id
 from trytond.transaction import Transaction
 from trytond.pool import Pool
 from trytond import backend
@@ -30,7 +30,7 @@ class SaleShop(ModelSQL, ModelView):
     sale_sequence = fields.Many2One(
         'ir.sequence', 'Sale Sequence', domain=[
             ('company', 'in', [Eval('company', -1), None]),
-            ('code', '=', 'sale.sale'),
+            ('sequence_type', '=', Id('sale', 'sequence_type_sale')),
             ],
         depends=['company'])
     sale_invoice_method = fields.Selection([
