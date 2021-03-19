@@ -26,7 +26,7 @@ def create_shop(payment_term, product_price_list, name=None, warehouse=None,
     shop.payment_term = payment_term
     if not sequence:
         sequence, = Sequence.find([
-            ('code', '=', 'sale.sale'),
+            ('name', '=', 'Sale'),
             ])
     shop.sale_sequence = sequence
     shop.sale_invoice_method = 'shipment'
