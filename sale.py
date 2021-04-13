@@ -67,24 +67,18 @@ class Sale(metaclass=PoolMeta):
         return shop.id if shop else None
 
     @classmethod
-    def default_invoice_method(cls):
+    def default_invoice_method(cls, **pattern):
         shop = cls.current_shop()
-        invoice_method = None
-        if shop:
-            invoice_method = shop.sale_invoice_method
-        if not invoice_method:
-            invoice_method = super().default_invoice_method()
-        return invoice_method
+        if shop and shop.sale_invoice_method:
+            return shop.sale_invoice_method
+        return super().default_invoice_method(**pattern)
 
     @classmethod
-    def default_shipment_method(cls):
+    def default_shipment_method(cls, **pattern):
         shop = cls.current_shop()
-        shipment_method = None
-        if shop:
-            shipment_method = shop.sale_shipment_method
-        if not shipment_method:
-            shipment_method = super().default_shipment_method()
-        return shipment_method
+        if shop and shop.sale_shipment_method:
+            return shop.sale_shipment_method
+        return super().default_shipment_method(**pattern)
 
     @classmethod
     def default_warehouse(cls):
@@ -104,11 +98,11 @@ class Sale(metaclass=PoolMeta):
         return shop.price_list.id
 
     @classmethod
-    def default_payment_term(cls):
+    def default_payment_term(cls, **pattern):
         shop = cls.current_shop()
-        if not shop or not shop.payment_term:
-            return
-        return shop.payment_term.id
+        if shop and shop.payment_term:
+            return shop.payment_term.id
+        return super().default_payment_term(**pattern)
 
     @classmethod
     def default_shop_address(cls):
