@@ -3,7 +3,7 @@
 # the full copyright notices and license terms.
 from sql import Null, Table
 
-from trytond.model import ModelView, ModelSQL, fields
+from trytond.model import ModelView, ModelSQL, DeactivableMixin, fields
 from trytond.pyson import If, Eval, Id
 from trytond.transaction import Transaction
 from trytond.pool import Pool
@@ -12,7 +12,7 @@ from trytond import backend
 __all__ = ['SaleShop', 'SaleShopResUser']
 
 
-class SaleShop(ModelSQL, ModelView):
+class SaleShop(DeactivableMixin, ModelSQL, ModelView):
     'Sale Shop'
     __name__ = 'sale.shop'
 
@@ -53,7 +53,6 @@ class SaleShop(ModelSQL, ModelView):
     company_party = fields.Function(fields.Many2One('party.party',
             'Company Party'),
         'on_change_with_company_party')
-    active = fields.Boolean('Active', select=True)
 
     @classmethod
     def __register__(cls, module_name):
@@ -166,10 +165,6 @@ class SaleShop(ModelSQL, ModelView):
     @staticmethod
     def default_company():
         return Transaction().context.get('company')
-
-    @staticmethod
-    def default_active():
-        return True
 
     @staticmethod
     def sale_configuration():
