@@ -51,7 +51,10 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
                 Eval('context', {}).get('company', 0)),
             ], select=True)
     company_party = fields.Function(fields.Many2One('party.party',
-            'Company Party'),
+        "Company Party",
+        context={
+            'company': Eval('company'),
+        }, depends=['company']),
         'on_change_with_company_party')
 
     @classmethod
