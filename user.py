@@ -32,6 +32,7 @@ class User(metaclass=PoolMeta):
             status += ' - %s' % (self.shop.rec_name)
         return status
 
+    @fields.depends('shops')
     def on_change_company(self):
         super().on_change_company()
         if self.company:
