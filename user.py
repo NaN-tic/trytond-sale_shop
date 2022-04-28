@@ -36,7 +36,8 @@ class User(metaclass=PoolMeta):
     def on_change_company(self):
         super().on_change_company()
         if self.company:
-            shops = [shop for shop in self.shops if shop.company == self.company]
+            shops = [shop for shop in self.shops
+                        if shop.company == self.company]
             if len(shops) == 1:
                 self.shop = shops[0]
             else:
