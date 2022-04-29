@@ -33,7 +33,7 @@ class Sale(metaclass=PoolMeta):
                 ]
         else:
             cls.shipment_address.domain = [('id', '=', Eval('shop_address'))]
-        cls.shipment_address.depends.append('shop_address')
+        cls.shipment_address.depends.add('shop_address')
         cls.party.on_change.add('shop')
 
     @classmethod

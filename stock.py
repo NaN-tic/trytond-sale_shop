@@ -30,7 +30,7 @@ class ShipmentOut(metaclass=PoolMeta):
                 ('id', 'in', Eval('shop_addresses')),
                 ]
         if 'shop_addresses' not in cls.delivery_address.depends:
-            cls.delivery_address.depends.append('shop_addresses')
+            cls.delivery_address.depends.add('shop_addresses')
 
     @fields.depends('warehouse')
     def on_change_with_shop_addresses(self, name=None):
@@ -65,7 +65,7 @@ class ShipmentOutReturn(metaclass=PoolMeta):
                 ('id', 'in', Eval('shop_addresses')),
                 ]
         if 'shop_addresses' not in cls.delivery_address.depends:
-            cls.delivery_address.depends.append('shop_addresses')
+            cls.delivery_address.depends.add('shop_addresses')
 
     @fields.depends('warehouse')
     def on_change_with_shop_addresses(self, name=None):
