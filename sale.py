@@ -14,10 +14,11 @@ class Sale(metaclass=PoolMeta):
     __name__ = 'sale.sale'
     shop = fields.Many2One('sale.shop', 'Shop', required=True, domain=[
             ('id', 'in', Eval('context', {}).get('shops', [])),
+            ('company', '=', Eval('company')),
             ],
         states={
             'readonly': (Eval('state') != 'draft') | Bool(Eval('number')),
-        }, depends=['number', 'state'])
+        }, depends=['number', 'state', 'company'])
     shop_address = fields.Function(fields.Many2One('party.address',
             'Shop Address'), 'on_change_with_shop_address')
 
