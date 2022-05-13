@@ -13,7 +13,7 @@ license terms. -->
         expr="/form/notebook/page[@id=&quot;preferences&quot;]"
         position="after">
         <page string="Shops" col="2" id="shops">
-            <field name="shops"/>
+            <field name="shops" view_ids="sale_shop.sale_shop_user_view_tree"/>
         </page>
     </xpath>
 </data>
