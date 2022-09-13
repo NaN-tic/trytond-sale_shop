@@ -53,19 +53,19 @@ class ShipmentOutReturn(metaclass=PoolMeta):
     @classmethod
     def __setup__(cls):
         super(ShipmentOutReturn, cls).__setup__()
-        delivery_addr_domain = cls.delivery_address.domain[:]
+        delivery_addr_domain = cls.contact_address.domain[:]
         if delivery_addr_domain:
-            cls.delivery_address.domain = [
+            cls.contact_address.domain = [
                 'OR',
                 delivery_addr_domain,
                 [('id', 'in', Eval('shop_addresses'))],
                 ]
         else:
-            cls.delivery_address.domain = [
+            cls.contact_address.domain = [
                 ('id', 'in', Eval('shop_addresses')),
                 ]
-        if 'shop_addresses' not in cls.delivery_address.depends:
-            cls.delivery_address.depends.add('shop_addresses')
+        if 'shop_addresses' not in cls.contact_address.depends:
+            cls.contact_address.depends.add('shop_addresses')
 
     @fields.depends('warehouse')
     def on_change_with_shop_addresses(self, name=None):
