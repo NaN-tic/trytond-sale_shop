@@ -16,7 +16,7 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
     'Sale Shop'
     __name__ = 'sale.shop'
 
-    name = fields.Char('Shop Name', required=True, select=True)
+    name = fields.Char('Shop Name', required=True)
     users = fields.Many2Many('sale.shop-res.user', 'shop', 'user', 'Users')
     address = fields.Many2One('party.address', 'Address', domain=[
             ('party', '=', Eval('company_party')),
@@ -52,7 +52,7 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
         domain=[
             ('id', If(Eval('context', {}).contains('company'), '=', '!='),
                 Eval('context', {}).get('company', 0)),
-            ], select=True)
+            ])
     company_party = fields.Function(fields.Many2One('party.party',
         "Company Party",
         context={
@@ -190,7 +190,6 @@ class SaleShopResUser(ModelSQL):
     __name__ = 'sale.shop-res.user'
     _table = 'sale_shop_res_user'
 
-    shop = fields.Many2One('sale.shop', 'Shop', ondelete='CASCADE',
-        select=True, required=True)
+    shop = fields.Many2One('sale.shop', 'Shop', ondelete='CASCADE', required=True)
     user = fields.Many2One('res.user', 'User', ondelete='RESTRICT',
         required=True)
