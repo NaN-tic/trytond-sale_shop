@@ -50,14 +50,6 @@ Create payment term::
     >>> payment_term = create_payment_term()
     >>> payment_term.save()
 
-Create product price list::
-
-    >>> ProductPriceList = Model.get('product.price_list')
-    >>> product_price_list = ProductPriceList()
-    >>> product_price_list.name = 'Price List'
-    >>> product_price_list.company = company
-    >>> product_price_list.save()
-
 Create parties::
 
     >>> Party = Model.get('party.party')
@@ -94,6 +86,21 @@ Create product::
     >>> product.cost_price = Decimal('25')
     >>> product.save()
 
+Create product price list::
+
+    >>> PriceList = Model.get('product.price_list')
+    >>> price_list = PriceList(name='Retail', price='list_price')
+    >>> price_list_line = price_list.lines.new()
+    >>> price_list_line.quantity = 10.0
+    >>> price_list_line.product = product
+    >>> price_list_line.formula = 'unit_price * 0.7'
+    >>> price_list_line = price_list.lines.new()
+    >>> price_list_line.product = product
+    >>> price_list_line.formula = 'unit_price * 0.8'
+    >>> price_list_line = price_list.lines.new()
+    >>> price_list_line.formula = 'unit_price * 0.5'
+    >>> price_list.save()
+
 Create an Inventory::
 
     >>> Inventory = Model.get('stock.inventory')
@@ -116,7 +123,7 @@ Create an Inventory::
 
 Create Sale Shop::
 
-    >>> shop = create_shop(payment_term, product_price_list)
+    >>> shop = create_shop(payment_term, price_list)
     >>> shop.save()
 
 Save Sale Shop User::
