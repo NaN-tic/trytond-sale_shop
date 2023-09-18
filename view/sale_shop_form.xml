@@ -28,6 +28,20 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <label name="payment_term"/>
             <field name="payment_term"/>
         </page>
+        <page string="Trade Information" id="trade_info">
+			<label name="company_trade_name"/>
+			<field name="company_trade_name"/>
+			<label name="lang"/>
+			<field name="lang"/>
+            <label name="phone"/>
+            <field name="phone"/>
+            <label name="email"/>
+            <field name="email"/>
+            <label name="website"/>
+            <field name="website" widget="url"/>
+			<label name="logo"/>
+			<field name="logo"/>
+		</page>
         <page string="Users" id="users">
             <field name="users"/>
         </page>
