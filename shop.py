@@ -59,6 +59,13 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
             'company': Eval('company'),
         }, depends=['company']),
         'on_change_with_company_party')
+    logo = fields.Binary('Logo')
+    lang = fields.Many2One("ir.lang", 'Language')
+    company_trade_name = fields.Char('Company Trade Name')
+    phone = fields.Char('Phone')
+    website = fields.Char('Website')
+    email = fields.Char('E-Mail')
+
 
     @classmethod
     def __register__(cls, module_name):
