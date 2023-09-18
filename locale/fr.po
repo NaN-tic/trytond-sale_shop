@@ -18,10 +18,6 @@ msgctxt "field:sale.sale,shop_address:"
 msgid "Shop Address"
 msgstr ""
 
-msgctxt "field:sale.shop,active:"
-msgid "Active"
-msgstr "Actif"
-
 msgctxt "field:sale.shop,address:"
 msgid "Address"
 msgstr "Adresse"
@@ -34,21 +30,25 @@ msgctxt "field:sale.shop,company_party:"
 msgid "Company Party"
 msgstr "Tiers de la société"
 
-msgctxt "field:sale.shop,create_date:"
-msgid "Create Date"
-msgstr "Date de création"
-
-msgctxt "field:sale.shop,create_uid:"
-msgid "Create User"
-msgstr "Créé par "
+msgctxt "field:sale.shop,company_trade_name:"
+msgid "Company Trade Name"
+msgstr "Nom commercial de l'entreprise"
 
 msgctxt "field:sale.shop,currency:"
 msgid "Currency"
 msgstr "Devises"
 
-msgctxt "field:sale.shop,id:"
-msgid "ID"
-msgstr "ID"
+msgctxt "field:sale.shop,email:"
+msgid "E-Mail"
+msgstr "E-Mail"
+
+msgctxt "field:sale.shop,lang:"
+msgid "Language"
+msgstr "Langue"
+
+msgctxt "field:sale.shop,logo:"
+msgid "Logo"
+msgstr "Logo"
 
 msgctxt "field:sale.shop,name:"
 msgid "Shop Name"
@@ -58,13 +58,13 @@ msgctxt "field:sale.shop,payment_term:"
 msgid "Payment Term"
 msgstr "Conditions de paiement"
 
+msgctxt "field:sale.shop,phone:"
+msgid "Phone"
+msgstr "Téléphone"
+
 msgctxt "field:sale.shop,price_list:"
 msgid "Price List"
 msgstr "Tarif"
-
-msgctxt "field:sale.shop,rec_name:"
-msgid "Name"
-msgstr "Nom"
 
 msgctxt "field:sale.shop,sale_invoice_method:"
 msgid "Sale Invoice Method"
@@ -86,29 +86,9 @@ msgctxt "field:sale.shop,warehouse:"
 msgid "Warehouse"
 msgstr "Entrepôt"
 
-msgctxt "field:sale.shop,write_date:"
-msgid "Write Date"
-msgstr "Date de mise à jour"
-
-msgctxt "field:sale.shop,write_uid:"
-msgid "Write User"
-msgstr "Mis à jour par"
-
-msgctxt "field:sale.shop-res.user,create_date:"
-msgid "Create Date"
-msgstr "Date de création"
-
-msgctxt "field:sale.shop-res.user,create_uid:"
-msgid "Create User"
-msgstr "Créé par"
-
-msgctxt "field:sale.shop-res.user,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:sale.shop-res.user,rec_name:"
-msgid "Name"
-msgstr "Nom"
+msgctxt "field:sale.shop,website:"
+msgid "Website"
+msgstr "Site web"
 
 msgctxt "field:sale.shop-res.user,shop:"
 msgid "Shop"
@@ -117,14 +97,6 @@ msgstr "Magasin"
 msgctxt "field:sale.shop-res.user,user:"
 msgid "User"
 msgstr "Utilisateur"
-
-msgctxt "field:sale.shop-res.user,write_date:"
-msgid "Write Date"
-msgstr "Date de mise à jour"
-
-msgctxt "field:sale.shop-res.user,write_uid:"
-msgid "Write User"
-msgstr "Mis à jour par"
 
 msgctxt "field:stock.shipment.out,shop_addresses:"
 msgid "Shop Addresses"
@@ -137,6 +109,10 @@ msgstr ""
 msgctxt "model:ir.action,name:act_sale_shop_form"
 msgid "Shops"
 msgstr "Magasins"
+
+msgctxt "model:ir.rule.group,name:rule_group_sale"
+msgid "Sale Shop Rule"
+msgstr ""
 
 msgctxt "model:ir.ui.menu,name:menu_sale_shop"
 msgid "Shops"
@@ -183,8 +159,8 @@ msgid "General"
 msgstr "Général"
 
 msgctxt "view:sale.shop:"
-msgid "Shops"
-msgstr "Magasins"
+msgid "Trade Information"
+msgstr "Informations commerciales"
 
 msgctxt "view:sale.shop:"
 msgid "Users"
