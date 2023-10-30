@@ -5,8 +5,6 @@ from trytond.model import fields
 from trytond.pyson import Eval
 from trytond.pool import PoolMeta
 
-__all__ = ['User']
-
 
 class User(metaclass=PoolMeta):
     __name__ = "res.user"
@@ -19,10 +17,6 @@ class User(metaclass=PoolMeta):
     @classmethod
     def __setup__(cls):
         super(User, cls).__setup__()
-        cls._preferences_fields.extend([
-                'shop',
-                'shops',
-                ])
         cls._context_fields.insert(0, 'shop')
         cls._context_fields.insert(0, 'shops')
 
@@ -35,12 +29,19 @@ class User(metaclass=PoolMeta):
     @fields.depends('shops')
     def on_change_company(self):
         super().on_change_company()
+        self.shop = None
+
         if self.company:
             shops = [shop for shop in self.shops
                         if shop.company == self.company]
             if len(shops) == 1:
                 self.shop = shops[0]
-            else:
-                self.shop = None
-        else:
-            self.shop = None
+
+    @classmethod
+    def _get_preferences(cls, user, context_only=False):
+        res = super(User, cls)._get_preferences(user,
+            context_only=context_only)
+        if not context_only:
+            res['shops'] = [c.id for c in user.shops]
+            res['shop'] = user.shop and user.shop.id or None
+        return res

@@ -6,7 +6,7 @@ from . import shop
 from . import sale
 from . import user
 from . import stock
-
+from . import ir
 
 def register():
     Pool.register(
@@ -16,4 +16,5 @@ def register():
         sale.Sale,
         stock.ShipmentOut,
         stock.ShipmentOutReturn,
+        ir.Rule,
         module='sale_shop', type_='model')
