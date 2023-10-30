@@ -4,6 +4,7 @@
 from trytond.model import fields
 from trytond.pyson import Eval
 from trytond.pool import PoolMeta
+from trytond.transaction import Transaction
 
 
 class User(metaclass=PoolMeta):
@@ -45,3 +46,29 @@ class User(metaclass=PoolMeta):
             res['shops'] = [c.id for c in user.shops]
             res['shop'] = user.shop and user.shop.id or None
         return res
+
+    @classmethod
+    def get_shop(cls):
+        '''
+        Return an shop id for the user
+        '''
+        transaction = Transaction()
+        user_id = transaction.user
+
+        with transaction.set_user(0):
+            user = cls(user_id)
+        return user.shop and user.shop.id or None
+
+    @classmethod
+    def get_shops(cls):
+        '''
+        Return an ordered tuple of shop ids for the user
+        '''
+        transaction = Transaction()
+        user_id = transaction.user
+
+        with transaction.set_user(0):
+            user = cls(user_id)
+        shops = [c.id for c in user.shops]
+        shops = tuple(shops)
+        return shops
