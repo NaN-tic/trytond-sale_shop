@@ -26,7 +26,7 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
     currency = fields.Many2One('currency.currency', 'Currency',)
     price_list = fields.Many2One('product.price_list', "Price List",
         domain=[
-            ('company', '=', Eval('company')),
+            ('company', '=', Eval('company', -1)),
         ], depends=['company'])
     payment_term = fields.Many2One('account.invoice.payment_term',
         'Payment Term')
@@ -56,7 +56,7 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
     company_party = fields.Function(fields.Many2One('party.party',
         "Company Party",
         context={
-            'company': Eval('company'),
+            'company': Eval('company', -1),
         }, depends=['company']),
         'on_change_with_company_party')
     logo = fields.Binary('Logo')
