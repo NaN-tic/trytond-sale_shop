@@ -14,7 +14,7 @@ class Sale(metaclass=PoolMeta):
     __name__ = 'sale.sale'
     shop = fields.Many2One('sale.shop', 'Shop', required=True, domain=[
             ('id', 'in', Eval('context', {}).get('shops', [])),
-            ('company', '=', Eval('company')),
+            ('company', '=', Eval('company', -1)),
             ],
         states={
             'readonly': (Eval('state') != 'draft') | Bool(Eval('number')),
