@@ -20,22 +20,21 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
     users = fields.Many2Many('sale.shop-res.user', 'shop', 'user', 'Users')
     address = fields.Many2One('party.address', 'Address', domain=[
             ('party', '=', Eval('company_party')),
-            ], depends=['company_party'])
+            ])
     warehouse = fields.Many2One('stock.location', "Warehouse", required=True,
         domain=[('type', '=', 'warehouse')])
     currency = fields.Many2One('currency.currency', 'Currency',)
     price_list = fields.Many2One('product.price_list', "Price List",
         domain=[
             ('company', '=', Eval('company', -1)),
-        ], depends=['company'])
+        ])
     payment_term = fields.Many2One('account.invoice.payment_term',
         'Payment Term')
     sale_sequence = fields.Many2One(
         'ir.sequence', 'Sale Sequence', domain=[
             ('company', 'in', [Eval('company', -1), None]),
             ('sequence_type', '=', Id('sale', 'sequence_type_sale')),
-            ],
-        depends=['company'])
+            ])
     sale_invoice_method = fields.Selection([
             (None, ''),
             ('manual', 'Manual'),

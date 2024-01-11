@@ -13,7 +13,7 @@ class User(metaclass=PoolMeta):
     shop = fields.Many2One('sale.shop', 'Shop', domain=[
             ('id', 'in', Eval('shops', [])),
             ('company', '=', Eval('company', -1),)
-            ], depends=['shops', 'company'])
+            ])
 
     @classmethod
     def __setup__(cls):

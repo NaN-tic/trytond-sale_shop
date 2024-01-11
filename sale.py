@@ -18,7 +18,7 @@ class Sale(metaclass=PoolMeta):
             ],
         states={
             'readonly': (Eval('state') != 'draft') | Bool(Eval('number')),
-        }, depends=['number', 'state', 'company'])
+        })
     shop_address = fields.Function(fields.Many2One('party.address',
             'Shop Address'), 'on_change_with_shop_address')
 
