@@ -22,7 +22,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
 
         <record model="ir.rule.group" id="rule_group_sale_companies">
             <field name="name">Sale Shop Rule</field>
-            <field name="model" search="[('model', '=', 'sale.sale')]"/>
+            <field name="model">sale.sale</field>
             <field name="global_p" eval="True"/>
         </record>
         <record model="ir.rule" id="rule_sale_companies">
