@@ -20,14 +20,14 @@ def create_shop(payment_term, product_price_list, name=None, warehouse=None,
     if not warehouse:
         warehouse, = Location.find([
             ('type', '=', 'warehouse'),
-            ])
+            ], limit=1)
     shop.warehouse = warehouse
     shop.price_list = product_price_list
     shop.payment_term = payment_term
     if not sequence:
         sequence, = Sequence.find([
             ('name', '=', 'Sale'),
-            ])
+            ], limit=1)
     shop.sale_sequence = sequence
     shop.sale_invoice_method = 'shipment'
     shop.sale_shipment_method = 'order'
