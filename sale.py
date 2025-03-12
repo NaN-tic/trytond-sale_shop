@@ -38,7 +38,7 @@ class Sale(metaclass=PoolMeta):
 
     @classmethod
     def __register__(cls, module_name):
-        table = backend.TableHandler(cls, module_name)
+        table = cls.__table_handler__(module_name)
         # Migration from 3.8: remove reference constraint
         if not table.column_exist('number'):
             table.drop_constraint('reference_uniq')
