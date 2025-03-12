@@ -75,7 +75,7 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
         Model = pool.get('ir.model')
         shop_table = cls.__table__()
         company_table = Company.__table__()
-        table_h = backend.TableHandler(cls, module_name)
+        table_h = cls.__table_handler__(module_name)
         table = cls.__table__()
         field = Field.__table__()
         model = Model.__table__()
