@@ -172,7 +172,8 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
         Shop = pool.get('sale.shop')
 
         company_id = Shop.default_company()
-        return company_id and Company(company_id).currency.id or None
+        return (Company(company_id).currency.id
+            if company_id is not None and company_id >= 0 else None)
 
     @staticmethod
     def default_company():
