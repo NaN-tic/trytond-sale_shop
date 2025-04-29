@@ -9,8 +9,6 @@ from trytond.transaction import Transaction
 from trytond.pool import Pool
 from trytond import backend
 
-__all__ = ['SaleShop', 'SaleShopResUser']
-
 
 class SaleShop(DeactivableMixin, ModelSQL, ModelView):
     'Sale Shop'
@@ -19,7 +17,7 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
     name = fields.Char('Shop Name', required=True)
     users = fields.Many2Many('sale.shop-res.user', 'shop', 'user', 'Users')
     address = fields.Many2One('party.address', 'Address', domain=[
-            ('party', '=', Eval('company_party')),
+            ('party', '=', Eval('company_party', -1)),
             ])
     warehouse = fields.Many2One('stock.location', "Warehouse", required=True,
         domain=[('type', '=', 'warehouse')])
