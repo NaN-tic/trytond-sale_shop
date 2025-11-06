@@ -16,7 +16,7 @@ class Rule(metaclass=PoolMeta):
         pool = Pool()
         User = pool.get('res.user')
         key = super()._get_cache_key(model_name)
-        return (*key, User.get_shop())
+        return (*key, User.get_shops())
 
     @classmethod
     def _get_context(cls, model_name):
