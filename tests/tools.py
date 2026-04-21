@@ -29,6 +29,6 @@ def create_shop(payment_term, product_price_list, name=None, warehouse=None,
             ('name', '=', 'Sale'),
             ], limit=1)
     shop.sale_sequence = sequence
-    shop.sale_invoice_method = 'shipment'
+    shop.sale_invoice_method = 'fulfillment'
     shop.sale_shipment_method = 'order'
     return shop
