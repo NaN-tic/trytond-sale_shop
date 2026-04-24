@@ -36,8 +36,8 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
     sale_invoice_method = fields.Selection([
             (None, ''),
             ('manual', 'Manual'),
-            ('order', 'On Order Processed'),
-            ('shipment', 'On Shipment Sent')
+            ('order', 'On Order'),
+            ('fulfillment', 'On Fulfillment')
             ], 'Sale Invoice Method')
     sale_shipment_method = fields.Selection([
             (None, ''),
@@ -158,6 +158,10 @@ class SaleShop(DeactivableMixin, ModelSQL, ModelView):
         table_h.not_null_action('payment_term', action='remove')
         # Migration from 5.2: do not require sale_invoice_method
         table_h.not_null_action('sale_invoice_method', action='remove')
+        # Migration from 7.8: rename invoice method shipment to fulfillment
+        cursor.execute(*table.update(
+                [table.sale_invoice_method], ['fulfillment'],
+                where=table.sale_invoice_method == 'shipment'))
         # Migration from 5.2: do not require sale_shipment_method
         table_h.not_null_action('sale_shipment_method', action='remove')
         # Migration from 5.2: do not require currency
