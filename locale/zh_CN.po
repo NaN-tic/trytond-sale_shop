@@ -1,0 +1,196 @@
+#
+msgid ""
+msgstr ""
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "field:res.user,shop:"
+msgid "Shop"
+msgstr "门店"
+
+msgctxt "field:res.user,shops:"
+msgid "Shops"
+msgstr "门店"
+
+msgctxt "field:sale.sale,shop:"
+msgid "Shop"
+msgstr "门店"
+
+msgctxt "field:sale.sale,shop_address:"
+msgid "Shop Address"
+msgstr "门店地址"
+
+msgctxt "field:sale.shop,address:"
+msgid "Address"
+msgstr "地址"
+
+msgctxt "field:sale.shop,company:"
+msgid "Company"
+msgstr "公司"
+
+msgctxt "field:sale.shop,company_party:"
+msgid "Company Party"
+msgstr "公司参与者"
+
+msgctxt "field:sale.shop,company_trade_name:"
+msgid "Company Trade Name"
+msgstr "公司商号"
+
+msgctxt "field:sale.shop,currency:"
+msgid "Currency"
+msgstr "货币"
+
+msgctxt "field:sale.shop,email:"
+msgid "E-Mail"
+msgstr "电子邮件"
+
+msgctxt "field:sale.shop,lang:"
+msgid "Language"
+msgstr "语言"
+
+msgctxt "field:sale.shop,logo:"
+msgid "Logo"
+msgstr "标志"
+
+msgctxt "field:sale.shop,name:"
+msgid "Shop Name"
+msgstr "门店名称"
+
+msgctxt "field:sale.shop,payment_term:"
+msgid "Payment Term"
+msgstr "支付方式"
+
+msgctxt "field:sale.shop,phone:"
+msgid "Phone"
+msgstr "电话"
+
+msgctxt "field:sale.shop,price_list:"
+msgid "Price List"
+msgstr "价目表"
+
+msgctxt "field:sale.shop,sale_invoice_method:"
+msgid "Sale Invoice Method"
+msgstr "销售开票方法"
+
+msgctxt "field:sale.shop,sale_sequence:"
+msgid "Sale Sequence"
+msgstr "销售编号序列"
+
+msgctxt "field:sale.shop,sale_shipment_method:"
+msgid "Sale Shipment Method"
+msgstr "销售发运方法"
+
+msgctxt "field:sale.shop,users:"
+msgid "Users"
+msgstr "用户"
+
+msgctxt "field:sale.shop,warehouse:"
+msgid "Warehouse"
+msgstr "仓库"
+
+msgctxt "field:sale.shop,website:"
+msgid "Website"
+msgstr "网站"
+
+msgctxt "field:sale.shop-res.user,shop:"
+msgid "Shop"
+msgstr "门店"
+
+msgctxt "field:sale.shop-res.user,user:"
+msgid "User"
+msgstr "用户"
+
+msgctxt "field:stock.shipment.out,shop_addresses:"
+msgid "Shop Addresses"
+msgstr "门店地址"
+
+msgctxt "field:stock.shipment.out.return,shop_addresses:"
+msgid "Shop Addresses"
+msgstr "门店地址"
+
+msgctxt "model:ir.action,name:act_sale_shop_form"
+msgid "Shops"
+msgstr "门店"
+
+msgctxt "model:ir.rule.group,name:rule_group_sale"
+msgid "Sale Shop Rule"
+msgstr "销售门店规则"
+
+msgctxt "model:ir.ui.menu,name:menu_sale_shop"
+msgid "Shops"
+msgstr "门店"
+
+msgctxt "model:sale.shop,name:"
+msgid "Sale Shop"
+msgstr "销售门店"
+
+msgctxt "model:sale.shop-res.user,name:"
+msgid "Sale Shop - Res User"
+msgstr "销售门店 - 系统用户"
+
+msgctxt "selection:sale.shop,sale_invoice_method:"
+msgid "Manual"
+msgstr "手工"
+
+msgctxt "selection:sale.shop,sale_invoice_method:"
+msgid "On Order Processed"
+msgstr "订单处理时"
+
+msgctxt "selection:sale.shop,sale_invoice_method:"
+msgid "On Shipment Sent"
+msgstr "发运单发出时"
+
+msgctxt "selection:sale.shop,sale_shipment_method:"
+msgid "Manual"
+msgstr "手工"
+
+msgctxt "selection:sale.shop,sale_shipment_method:"
+msgid "On Invoice Paid"
+msgstr "发票付款时"
+
+msgctxt "selection:sale.shop,sale_shipment_method:"
+msgid "On Order Processed"
+msgstr "订单处理时"
+
+msgctxt "view:res.user:"
+msgid "Shops"
+msgstr "门店"
+
+msgctxt "view:sale.shop:"
+msgid "General"
+msgstr "普通"
+
+msgctxt "view:sale.shop:"
+msgid "Trade Information"
+msgstr "商号信息"
+
+msgctxt "view:sale.shop:"
+msgid "Users"
+msgstr "用户"
+
+msgctxt "help:ir.rule,domain:"
+msgid ""
+"\n"
+"- \"shops\" from the current user"
+msgstr ""
+"\n"
+"- 当前用户的“shops”"
+
+msgctxt "model:ir.rule.group,name:rule_group_sale_companies"
+msgid "Sale Shop Rule"
+msgstr "销售门店规则"
+
+msgctxt "model:sale.shop,string:"
+msgid "Sale Shop"
+msgstr "销售门店"
+
+msgctxt "selection:sale.shop,sale_invoice_method:"
+msgid "On Fulfillment"
+msgstr "履约时"
+
+msgctxt "selection:sale.shop,sale_invoice_method:"
+msgid "On Order"
+msgstr "下单时"
