@@ -1,0 +1,196 @@
+#
+msgid ""
+msgstr ""
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "field:res.user,shop:"
+msgid "Shop"
+msgstr "Üzlet"
+
+msgctxt "field:res.user,shops:"
+msgid "Shops"
+msgstr "Üzletek"
+
+msgctxt "field:sale.sale,shop:"
+msgid "Shop"
+msgstr "Üzlet"
+
+msgctxt "field:sale.sale,shop_address:"
+msgid "Shop Address"
+msgstr "Üzlet címe"
+
+msgctxt "field:sale.shop,address:"
+msgid "Address"
+msgstr "Cím"
+
+msgctxt "field:sale.shop,company:"
+msgid "Company"
+msgstr "Cég"
+
+msgctxt "field:sale.shop,company_party:"
+msgid "Company Party"
+msgstr "Vállalat partnere"
+
+msgctxt "field:sale.shop,company_trade_name:"
+msgid "Company Trade Name"
+msgstr "Vállalat kereskedelmi neve"
+
+msgctxt "field:sale.shop,currency:"
+msgid "Currency"
+msgstr "Pénznem"
+
+msgctxt "field:sale.shop,email:"
+msgid "E-Mail"
+msgstr "E-mail"
+
+msgctxt "field:sale.shop,lang:"
+msgid "Language"
+msgstr "Nyelv"
+
+msgctxt "field:sale.shop,logo:"
+msgid "Logo"
+msgstr "Logó"
+
+msgctxt "field:sale.shop,name:"
+msgid "Shop Name"
+msgstr "Üzlet neve"
+
+msgctxt "field:sale.shop,payment_term:"
+msgid "Payment Term"
+msgstr "Fizetési feltétel"
+
+msgctxt "field:sale.shop,phone:"
+msgid "Phone"
+msgstr "Telefon"
+
+msgctxt "field:sale.shop,price_list:"
+msgid "Price List"
+msgstr "Árlista"
+
+msgctxt "field:sale.shop,sale_invoice_method:"
+msgid "Sale Invoice Method"
+msgstr "Vevői rendelések számlázási módja"
+
+msgctxt "field:sale.shop,sale_sequence:"
+msgid "Sale Sequence"
+msgstr "Vevői rendelések sorszámozása"
+
+msgctxt "field:sale.shop,sale_shipment_method:"
+msgid "Sale Shipment Method"
+msgstr "Vevői rendelések szállítási módja"
+
+msgctxt "field:sale.shop,users:"
+msgid "Users"
+msgstr "Felhasználók"
+
+msgctxt "field:sale.shop,warehouse:"
+msgid "Warehouse"
+msgstr "Raktár"
+
+msgctxt "field:sale.shop,website:"
+msgid "Website"
+msgstr "Weboldal"
+
+msgctxt "field:sale.shop-res.user,shop:"
+msgid "Shop"
+msgstr "Üzlet"
+
+msgctxt "field:sale.shop-res.user,user:"
+msgid "User"
+msgstr "Felhasználó"
+
+msgctxt "field:stock.shipment.out,shop_addresses:"
+msgid "Shop Addresses"
+msgstr "Üzlet címei"
+
+msgctxt "field:stock.shipment.out.return,shop_addresses:"
+msgid "Shop Addresses"
+msgstr "Üzlet címei"
+
+msgctxt "model:ir.action,name:act_sale_shop_form"
+msgid "Shops"
+msgstr "Üzletek"
+
+msgctxt "model:ir.rule.group,name:rule_group_sale"
+msgid "Sale Shop Rule"
+msgstr "Értékesítési üzletszabály"
+
+msgctxt "model:ir.ui.menu,name:menu_sale_shop"
+msgid "Shops"
+msgstr "Üzletek"
+
+msgctxt "model:sale.shop,name:"
+msgid "Sale Shop"
+msgstr "Értékesítési üzlet"
+
+msgctxt "model:sale.shop-res.user,name:"
+msgid "Sale Shop - Res User"
+msgstr "Értékesítési üzlet – Felhasználó"
+
+msgctxt "selection:sale.shop,sale_invoice_method:"
+msgid "Manual"
+msgstr "kézzel"
+
+msgctxt "selection:sale.shop,sale_invoice_method:"
+msgid "On Order Processed"
+msgstr "a rendelés alapján"
+
+msgctxt "selection:sale.shop,sale_invoice_method:"
+msgid "On Shipment Sent"
+msgstr "Szállítmány feladásakor"
+
+msgctxt "selection:sale.shop,sale_shipment_method:"
+msgid "Manual"
+msgstr "kézzel"
+
+msgctxt "selection:sale.shop,sale_shipment_method:"
+msgid "On Invoice Paid"
+msgstr "a kifizetett számla alapján"
+
+msgctxt "selection:sale.shop,sale_shipment_method:"
+msgid "On Order Processed"
+msgstr "a rendelés alapján"
+
+msgctxt "view:res.user:"
+msgid "Shops"
+msgstr "Üzletek"
+
+msgctxt "view:sale.shop:"
+msgid "General"
+msgstr "Általános"
+
+msgctxt "view:sale.shop:"
+msgid "Trade Information"
+msgstr "Kereskedelmi információk"
+
+msgctxt "view:sale.shop:"
+msgid "Users"
+msgstr "Felhasználók"
+
+msgctxt "help:ir.rule,domain:"
+msgid ""
+"\n"
+"- \"shops\" from the current user"
+msgstr ""
+"\n"
+"- az aktuális felhasználó „shops” értéke"
+
+msgctxt "model:ir.rule.group,name:rule_group_sale_companies"
+msgid "Sale Shop Rule"
+msgstr "Értékesítési üzletszabály"
+
+msgctxt "model:sale.shop,string:"
+msgid "Sale Shop"
+msgstr "Értékesítési üzlet"
+
+msgctxt "selection:sale.shop,sale_invoice_method:"
+msgid "On Fulfillment"
+msgstr "Teljesítéskor"
+
+msgctxt "selection:sale.shop,sale_invoice_method:"
+msgid "On Order"
+msgstr "rendelésenként"
